@@ -90,18 +90,21 @@ export default function CompareWorkbench() {
   };
 
   return (
-    <main className="compare-page">
-      <header className="compare-nav">
-        <Link href="/" className="compare-brand" aria-label="Back to Flare home">
-          <LogoMark size={23} />
-          <span>FLARE</span>
-          <i>LAB</i>
-        </Link>
-        <nav aria-label="Primary navigation">
-          <Link href="/">Career comparison</Link>
-          <span className="compare-nav-active">Cross-era lab</span>
+    <main className="app-shell compare-page">
+      <header className="app-header compare-nav">
+        <div className="brand-group">
+          <Link href="/" className="logo-box compare-brand" aria-label="Back to Flare home">
+            <LogoMark size={24} />
+            <span className="logo-text">FLARE</span>
+          </Link>
+          <span className="app-tagline">Cross-era performance lab</span>
+        </div>
+        <nav className="header-actions compare-nav-links" aria-label="Primary navigation">
+          <Link className="header-btn" href="/">
+            <span>Career Comparison</span>
+          </Link>
+          <span className="header-btn compare-nav-active">Cross-Era Lab</span>
         </nav>
-        <span className="compare-nav-note">F1 performance model · beta</span>
       </header>
 
       <section className="compare-hero">

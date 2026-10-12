@@ -1661,3 +1661,143 @@ body {
   .source-list em { display: none; }
   .compare-footer { display: grid; grid-template-columns: 1fr; gap: 7px; }
 }
+
+/* Cross-era lab: align its visual language with the career comparison page. */
+.app-shell.compare-page {
+  --compare-ink: var(--text-main);
+  --compare-paper: var(--bg-page);
+  --compare-line: var(--border-subtle);
+  --compare-muted: var(--text-muted);
+  --compare-lime: #d9f99d;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  gap: 20px;
+}
+
+.compare-nav {
+  min-height: auto;
+  padding: 16px 24px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.compare-brand { gap: 10px; letter-spacing: 0; }
+.compare-brand svg { color: inherit; }
+.compare-brand .logo-text { letter-spacing: 3px; }
+.compare-nav-links { margin-left: auto; }
+.compare-nav-links .header-btn {
+  color: var(--text-muted);
+  font-family: var(--font-f1);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: none;
+}
+.compare-nav-links .compare-nav-active {
+  background: var(--text-main);
+  border-color: var(--text-main);
+  color: #ffffff;
+}
+.compare-nav-active::before { display: none; }
+
+.compare-hero {
+  display: block;
+  padding: 28px 30px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+.compare-hero h1 {
+  max-width: none;
+  color: var(--text-main);
+  font-size: clamp(2.45rem, 5.2vw, 4.5rem);
+  letter-spacing: -2.2px;
+  line-height: 0.94;
+}
+.compare-hero h1 em { color: var(--f1-red); }
+.compare-lede { max-width: 760px; margin-top: 17px; color: var(--text-body); font-size: 0.96rem; }
+
+.compare-control-panel {
+  overflow: hidden;
+  border-color: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.compare-presets { background: var(--bg-card-subtle); border-bottom: 1px solid var(--border-subtle); }
+.compare-presets > span { color: var(--text-muted); }
+.compare-presets button {
+  border-color: var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-body);
+  box-shadow: var(--shadow-xs);
+}
+.compare-presets button:hover, .compare-presets button.selected {
+  border-color: var(--text-main);
+  background: var(--text-main);
+  color: #ffffff;
+}
+.compare-selects { background: var(--bg-card); }
+.compare-select-group select { background: var(--bg-card); color: var(--text-main); border-bottom-color: var(--border-subtle); }
+.compare-swap { border-color: var(--border-subtle); background: var(--bg-card-subtle); color: var(--text-body); box-shadow: var(--shadow-xs); }
+.compare-swap:hover { background: var(--text-main); color: #ffffff; }
+
+.outcome-panel {
+  gap: 18px;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+.outcome-driver, .outcome-center {
+  min-height: 262px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.outcome-driver {
+  padding: 24px;
+  border-top: 4px solid var(--compare-driver);
+}
+.outcome-center {
+  padding: 24px;
+  border-color: var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+.outcome-center-label { color: var(--text-muted); }
+.outcome-gauge { border-color: var(--border-subtle); background: var(--bg-track); }
+.outcome-center p strong { color: var(--text-main); }
+.outcome-interpretation { color: var(--text-body); }
+.outcome-driver h2 { color: var(--text-main); }
+
+.compare-card {
+  border-color: var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.compare-card:hover { border-color: var(--border-strong); }
+.model-chip { border-color: var(--success-border); background: var(--success-bg); color: var(--success-green); }
+.confidence-chip { border-color: var(--success-border); background: var(--success-bg); color: var(--success-green); }
+.confidence-chip.caution { border-color: #fde68a; background: #fffbeb; color: #b45309; }
+.formula-note, .network-footer, .source-list a { border-color: var(--border-subtle); }
+.method-card { background: var(--bg-card-subtle); }
+.route-index { background: var(--text-main); color: #ffffff; }
+.source-pulse { border-color: var(--success-border); background: var(--success-bg); color: var(--success-green); }
+.source-pulse.checking { border-color: #fde68a; background: #fffbeb; color: #b45309; }
+.compare-footer { border-color: var(--border-subtle); }
+
+@media (max-width: 850px) {
+  .app-shell.compare-page { padding: 16px; }
+  .outcome-panel { gap: 12px; }
+}
+
+@media (max-width: 600px) {
+  .compare-hero { padding: 22px 18px; }
+  .compare-hero h1 { font-size: 2.45rem; letter-spacing: -1.7px; }
+  .outcome-panel { gap: 8px; }
+  .outcome-driver, .outcome-center { border-radius: var(--radius-md); }
+  .outcome-driver { padding: 16px; }
+}
