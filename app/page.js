@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { CURATED_DRIVERS, ICONIC_MATCHUPS } from '../data/drivers.js';
 import {
   getDriverBioAndImage,
@@ -152,6 +153,9 @@ export default function Home() {
         </div>
 
         <div className="header-actions">
+          <Link className="header-btn" href="/compare" title="Open the cross-era comparison lab">
+            <span>Cross-Era Lab</span>
+          </Link>
           <button
             className="header-btn btn-random"
             onClick={handleRandomBattle}
