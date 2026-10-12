@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "model:build": "python python/build_cross_era_snapshot.py"
   },
   "keywords": [
     "f1",

@@ -1,0 +1,508 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-12T12:01:47.121278+00:00",
+  "source": {
+    "name": "F1DB",
+    "url": "https://github.com/f1db/f1db/releases/latest/download/f1db-csv.zip",
+    "archiveBytes": 4496169
+  },
+  "model": {
+    "name": "time-aware Bradley-Terry",
+    "windowYears": 4,
+    "ratingScale": "Elo = 1500 + latent_strength \u00d7 173.7178",
+    "notes": "Same-constructor qualifying and clean classified race observations; season strengths are temporally smoothed."
+  },
+  "observations": {
+    "qualifying": 10453,
+    "race": 5316,
+    "combined": 15769
+  },
+  "profiles": {
+    "hamilton": {
+      "peakElo": 1670,
+      "uncertaintyElo": 47,
+      "tqi": 87,
+      "pace": 81,
+      "race": 78,
+      "execution": 87,
+      "adaptability": 69,
+      "peak": "2018\u20132021",
+      "era": "2018\u20132021",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "max_verstappen": {
+      "peakElo": 1935,
+      "uncertaintyElo": 104,
+      "tqi": 100,
+      "pace": 99,
+      "race": 100,
+      "execution": 100,
+      "adaptability": 63,
+      "peak": "2024\u20132026",
+      "era": "2024\u20132026",
+      "observations": {
+        "windowSeasons": 3
+      }
+    },
+    "michael_schumacher": {
+      "peakElo": 1975,
+      "uncertaintyElo": 118,
+      "tqi": 100,
+      "pace": 100,
+      "race": 98,
+      "execution": 100,
+      "adaptability": 69,
+      "peak": "1993\u20131996",
+      "era": "1993\u20131996",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "senna": {
+      "peakElo": 1890,
+      "uncertaintyElo": 188,
+      "tqi": 99,
+      "pace": 100,
+      "race": 94,
+      "execution": 99,
+      "adaptability": 57,
+      "peak": "1993\u20131994",
+      "era": "1993\u20131994",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "prost": {
+      "peakElo": 1768,
+      "uncertaintyElo": 87,
+      "tqi": 97,
+      "pace": 97,
+      "race": 93,
+      "execution": 97,
+      "adaptability": 57,
+      "peak": "1991\u20131993",
+      "era": "1991\u20131993",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "vettel": {
+      "peakElo": 1599,
+      "uncertaintyElo": 54,
+      "tqi": 76,
+      "pace": 74,
+      "race": 70,
+      "execution": 76,
+      "adaptability": 69,
+      "peak": "2008\u20132011",
+      "era": "2008\u20132011",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "alonso": {
+      "peakElo": 1754,
+      "uncertaintyElo": 66,
+      "tqi": 96,
+      "pace": 94,
+      "race": 96,
+      "execution": 96,
+      "adaptability": 69,
+      "peak": "2009\u20132012",
+      "era": "2009\u20132012",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "norris": {
+      "peakElo": 1662,
+      "uncertaintyElo": 46,
+      "tqi": 84,
+      "pace": 88,
+      "race": 71,
+      "execution": 84,
+      "adaptability": 69,
+      "peak": "2021\u20132024",
+      "era": "2021\u20132024",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "leclerc": {
+      "peakElo": 1669,
+      "uncertaintyElo": 43,
+      "tqi": 87,
+      "pace": 80,
+      "race": 79,
+      "execution": 87,
+      "adaptability": 69,
+      "peak": "2022\u20132025",
+      "era": "2022\u20132025",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "piastri": {
+      "peakElo": 1500,
+      "uncertaintyElo": 62,
+      "tqi": 59,
+      "pace": 60,
+      "race": 51,
+      "execution": 59,
+      "adaptability": 57,
+      "peak": "2025\u20132026",
+      "era": "2025\u20132026",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "russell": {
+      "peakElo": 1585,
+      "uncertaintyElo": 44,
+      "tqi": 74,
+      "pace": 74,
+      "race": 61,
+      "execution": 74,
+      "adaptability": 69,
+      "peak": "2022\u20132025",
+      "era": "2022\u20132025",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "sainz": {
+      "peakElo": 1632,
+      "uncertaintyElo": 68,
+      "tqi": 79,
+      "pace": 78,
+      "race": 68,
+      "execution": 79,
+      "adaptability": 57,
+      "peak": "2025\u20132026",
+      "era": "2025\u20132026",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "raikkonen": {
+      "peakElo": 1677,
+      "uncertaintyElo": 72,
+      "tqi": 88,
+      "pace": 80,
+      "race": 82,
+      "execution": 88,
+      "adaptability": 57,
+      "peak": "2008\u20132009",
+      "era": "2008\u20132009",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "lauda": {
+      "peakElo": 1756,
+      "uncertaintyElo": 86,
+      "tqi": 96,
+      "pace": 93,
+      "race": 98,
+      "execution": 96,
+      "adaptability": 57,
+      "peak": "1978\u20131979",
+      "era": "1978\u20131979",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "fangio": {
+      "peakElo": 1784,
+      "uncertaintyElo": 263,
+      "tqi": 98,
+      "pace": 87,
+      "race": 98,
+      "execution": 98,
+      "adaptability": 63,
+      "peak": "1954\u20131957",
+      "era": "1954\u20131957",
+      "observations": {
+        "windowSeasons": 3
+      }
+    },
+    "clark": {
+      "peakElo": 1802,
+      "uncertaintyElo": 221,
+      "tqi": 99,
+      "pace": 97,
+      "race": 98,
+      "execution": 99,
+      "adaptability": 57,
+      "peak": "1967\u20131968",
+      "era": "1967\u20131968",
+      "observations": {
+        "windowSeasons": 2
+      }
+    },
+    "mansell": {
+      "peakElo": 1747,
+      "uncertaintyElo": 62,
+      "tqi": 95,
+      "pace": 95,
+      "race": 81,
+      "execution": 95,
+      "adaptability": 69,
+      "peak": "1986\u20131989",
+      "era": "1986\u20131989",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "hakkinen": {
+      "peakElo": 1760,
+      "uncertaintyElo": 87,
+      "tqi": 96,
+      "pace": 97,
+      "race": 80,
+      "execution": 96,
+      "adaptability": 69,
+      "peak": "1992\u20131995",
+      "era": "1992\u20131995",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "rosberg": {
+      "peakElo": 1606,
+      "uncertaintyElo": 53,
+      "tqi": 76,
+      "pace": 75,
+      "race": 62,
+      "execution": 76,
+      "adaptability": 69,
+      "peak": "2008\u20132011",
+      "era": "2008\u20132011",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "button": {
+      "peakElo": 1647,
+      "uncertaintyElo": 59,
+      "tqi": 82,
+      "pace": 75,
+      "race": 83,
+      "execution": 82,
+      "adaptability": 69,
+      "peak": "2003\u20132006",
+      "era": "2003\u20132006",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "ricciardo": {
+      "peakElo": 1624,
+      "uncertaintyElo": 46,
+      "tqi": 79,
+      "pace": 78,
+      "race": 67,
+      "execution": 79,
+      "adaptability": 69,
+      "peak": "2013\u20132016",
+      "era": "2013\u20132016",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "perez": {
+      "peakElo": 1567,
+      "uncertaintyElo": 45,
+      "tqi": 71,
+      "pace": 68,
+      "race": 66,
+      "execution": 71,
+      "adaptability": 69,
+      "peak": "2011\u20132014",
+      "era": "2011\u20132014",
+      "observations": {
+        "windowSeasons": 4
+      }
+    },
+    "bottas": {
+      "peakElo": 1560,
+      "uncertaintyElo": 44,
+      "tqi": 70,
+      "pace": 74,
+      "race": 48,
+      "execution": 70,
+      "adaptability": 69,
+      "peak": "2014\u20132017",
+      "era": "2014\u20132017",
+      "observations": {
+        "windowSeasons": 4
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "bottas",
+      "to": "hamilton",
+      "label": "Mercedes \u00b7 2017\u20132021",
+      "observations": 5
+    },
+    {
+      "from": "hamilton",
+      "to": "rosberg",
+      "label": "Mercedes \u00b7 2013\u20132016",
+      "observations": 4
+    },
+    {
+      "from": "raikkonen",
+      "to": "vettel",
+      "label": "Ferrari \u00b7 2015\u20132018",
+      "observations": 4
+    },
+    {
+      "from": "leclerc",
+      "to": "sainz",
+      "label": "Ferrari \u00b7 2021\u20132024",
+      "observations": 4
+    },
+    {
+      "from": "max_verstappen",
+      "to": "perez",
+      "label": "Red Bull \u00b7 2021\u20132024",
+      "observations": 4
+    },
+    {
+      "from": "norris",
+      "to": "piastri",
+      "label": "Mclaren \u00b7 2023\u20132026",
+      "observations": 4
+    },
+    {
+      "from": "button",
+      "to": "hamilton",
+      "label": "Mclaren \u00b7 2010\u20132012",
+      "observations": 3
+    },
+    {
+      "from": "michael_schumacher",
+      "to": "rosberg",
+      "label": "Mercedes \u00b7 2010\u20132012",
+      "observations": 3
+    },
+    {
+      "from": "max_verstappen",
+      "to": "ricciardo",
+      "label": "Red Bull \u00b7 2016\u20132018",
+      "observations": 3
+    },
+    {
+      "from": "hamilton",
+      "to": "russell",
+      "label": "Mercedes \u00b7 2022\u20132024",
+      "observations": 3
+    },
+    {
+      "from": "lauda",
+      "to": "prost",
+      "label": "Mclaren \u00b7 1984\u20131985",
+      "observations": 2
+    },
+    {
+      "from": "prost",
+      "to": "senna",
+      "label": "Mclaren \u00b7 1988\u20131989",
+      "observations": 2
+    },
+    {
+      "from": "max_verstappen",
+      "to": "sainz",
+      "label": "Toro Rosso \u00b7 2015\u20132016",
+      "observations": 2
+    },
+    {
+      "from": "alonso",
+      "to": "button",
+      "label": "Mclaren \u00b7 2015\u20132016",
+      "observations": 2
+    },
+    {
+      "from": "leclerc",
+      "to": "vettel",
+      "label": "Ferrari \u00b7 2019\u20132020",
+      "observations": 2
+    },
+    {
+      "from": "norris",
+      "to": "sainz",
+      "label": "Mclaren \u00b7 2019\u20132020",
+      "observations": 2
+    },
+    {
+      "from": "norris",
+      "to": "ricciardo",
+      "label": "Mclaren \u00b7 2021\u20132022",
+      "observations": 2
+    },
+    {
+      "from": "hamilton",
+      "to": "leclerc",
+      "label": "Ferrari \u00b7 2025\u20132026",
+      "observations": 2
+    },
+    {
+      "from": "mansell",
+      "to": "prost",
+      "label": "Ferrari \u00b7 1990",
+      "observations": 1
+    },
+    {
+      "from": "hakkinen",
+      "to": "senna",
+      "label": "Mclaren \u00b7 1993",
+      "observations": 1
+    },
+    {
+      "from": "hakkinen",
+      "to": "mansell",
+      "label": "Mclaren \u00b7 1995",
+      "observations": 1
+    },
+    {
+      "from": "alonso",
+      "to": "hamilton",
+      "label": "Mclaren \u00b7 2007",
+      "observations": 1
+    },
+    {
+      "from": "button",
+      "to": "perez",
+      "label": "Mclaren \u00b7 2013",
+      "observations": 1
+    },
+    {
+      "from": "alonso",
+      "to": "raikkonen",
+      "label": "Ferrari \u00b7 2014",
+      "observations": 1
+    },
+    {
+      "from": "ricciardo",
+      "to": "vettel",
+      "label": "Red Bull \u00b7 2014",
+      "observations": 1
+    },
+    {
+      "from": "bottas",
+      "to": "russell",
+      "label": "Mercedes \u00b7 2020",
+      "observations": 1
+    },
+    {
+      "from": "bottas",
+      "to": "perez",
+      "label": "Cadillac \u00b7 2026",
+      "observations": 1
+    }
+  ]
+}

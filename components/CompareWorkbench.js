@@ -36,15 +36,15 @@ function OutcomeCard({ driver, probability, range, side }) {
       </div>
       <h2>{driver.name}</h2>
       <div className="posterior-block">
-        <span>Era-neutral posterior</span>
+        <span>Fitted peak window</span>
         <strong>{driver.profile.tqi}<small>/100</small></strong>
-        <em>Elo {driver.rating}</em>
+        <em>Peak Elo {driver.rating}</em>
       </div>
       <div className="outcome-probability">
         <strong>{probability}%</strong>
-        <span>neutral-session edge</span>
+        <span>peak-to-peak edge</span>
       </div>
-      <p>{range[0]}–{range[1]}% credible range</p>
+      <p>{range[0]}–{range[1]}% uncertainty range</p>
     </article>
   );
 }
@@ -113,9 +113,9 @@ export default function CompareWorkbench() {
           <h1>Compare the driver,<br /><em>not the machinery.</em></h1>
         </div>
         <p className="compare-lede">
-          A Bradley–Terry posterior turns same-car results into an opponent-adjusted rating,
-          then carries it across eras through the teammate network. Achievement totals stay out
-          of the win probability.
+          A Python-fitted, time-aware Bradley–Terry model turns same-car results into
+          season-level strengths. Each driver is compared at their best sustained four-year
+          window—not their rookie or late-career average.
         </p>
       </section>
 
@@ -154,14 +154,14 @@ export default function CompareWorkbench() {
           side="a"
         />
         <div className="outcome-center">
-          <div className="outcome-center-label">MODEL EXPECTATION</div>
+          <div className="outcome-center-label">PEAK-TO-PEAK EXPECTATION</div>
           <div className="outcome-gauge" aria-label={`${driverA.name} ${comparison.probabilityA} percent, ${driverB.name} ${comparison.probabilityB} percent`}>
             <div className="outcome-gauge-a" style={{ width: `${comparison.probabilityA}%`, background: driverA.color || '#008f82' }} />
             <div className="outcome-gauge-b" style={{ width: `${comparison.probabilityB}%`, background: driverB.color || '#e10600' }} />
           </div>
-          <p><strong>{comparison.ratingGap} Elo</strong> posterior gap</p>
+          <p><strong>{comparison.ratingGap} Elo</strong> fitted gap</p>
           <span className="outcome-interpretation">
-            In a neutral same-car session, this is an expectation—not a predicted race result.
+            Best sustained windows in neutral machinery—not a prediction for one real race.
           </span>
         </div>
         <OutcomeCard
@@ -177,13 +177,13 @@ export default function CompareWorkbench() {
           <div className="compare-card-heading">
             <div>
               <p className="compare-eyebrow">MODEL DECOMPOSITION</p>
-              <h2>What informs the posterior</h2>
+              <h2>What informs the estimate</h2>
             </div>
-            <span className="model-chip">No TQI multiplier</span>
+            <span className="model-chip">Python fitted</span>
           </div>
           <p className="card-copy">
-            Teammate quality changes the expected result in the Elo term. It is not applied a
-            second time as a subjective bonus.
+            The fitter estimates a separate strength for every driver-season, smooths adjacent
+            seasons, and derives each driver’s strongest sustained four-year window.
           </p>
           <div className="dimension-list">
             {comparison.dimensions.map((dimension) => (
@@ -202,7 +202,7 @@ export default function CompareWorkbench() {
           </div>
           <div className="formula-note">
             <code>E = 1 / (1 + 10<sup>(R<sub>B</sub> − R<sub>A</sub>) / 400</sup>)</code>
-            <span>Ratings are era-normalised before the expectation is calculated.</span>
+            <span>Ratings come from the generated Python model snapshot.</span>
           </div>
         </article>
 
@@ -246,7 +246,7 @@ export default function CompareWorkbench() {
           <ul>
             <li>Qualifying and race performance are estimated separately before combination.</li>
             <li>Points and raw win totals are contextual evidence, never the comparison outcome.</li>
-            <li>Mechanical DNFs, non-starts, penalties and abnormal sessions are downweighted in the source build.</li>
+            <li>Only clean, classified two-car teammate race results enter the race component.</li>
             <li>Older records receive wider intervals when timing depth or network links are thinner.</li>
           </ul>
         </article>
@@ -273,7 +273,7 @@ export default function CompareWorkbench() {
             })}
           </div>
           <p className="sources-footnote">
-            The screen uses a versioned calibration snapshot so upstream outages cannot silently rewrite a comparison.
+            The screen uses a versioned fitted snapshot so upstream outages cannot silently rewrite a comparison.
             Provider checks above are informational; no key, paid plan or user tracking is required.
           </p>
         </article>
