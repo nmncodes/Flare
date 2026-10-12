@@ -316,9 +316,18 @@ body {
   gap: 8px;
 }
 
-.flag-icon {
-  font-size: 1.4rem;
-  line-height: 1;
+.fia-country-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
 }
 
 .driver-num-tag {
@@ -343,6 +352,9 @@ body {
   border-radius: var(--radius-sm);
   cursor: pointer;
   box-shadow: var(--shadow-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   transition: var(--transition-fast);
 }
 
@@ -569,15 +581,48 @@ body {
 }
 
 .dominance-verdict {
-  font-size: 0.78rem;
-  color: var(--text-body);
   background: #ffffff;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
-  line-height: 1.5;
   margin-top: 10px;
   text-align: left;
+}
+
+.verdict-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.verdict-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.badge-neutral {
+  background: var(--bg-badge);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-lead {
+  background: var(--f1-red-subtle);
+  color: var(--f1-red-dark);
+  border: 1px solid var(--f1-red-border);
+}
+
+.verdict-copy {
+  font-size: 0.78rem;
+  color: var(--text-body);
+  line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -683,15 +728,17 @@ body {
   font-weight: 900;
 }
 
-.winner-badge {
-  font-size: 0.6rem;
+.winner-pill {
+  font-size: 0.62rem;
   font-family: var(--font-mono);
-  padding: 1px 5px;
+  font-weight: 800;
+  padding: 2px 5px;
   border-radius: 3px;
   background: var(--success-bg);
   color: var(--success-green);
   border: 1px solid var(--success-border);
   margin: 0 4px;
+  letter-spacing: 0.5px;
   vertical-align: middle;
 }
 
@@ -728,6 +775,17 @@ body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.stat-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
 }
 
 .stat-desc {
