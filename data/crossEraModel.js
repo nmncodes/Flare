@@ -34,9 +34,27 @@ function expectedScore(ratingA, ratingB) {
   return 1 / (1 + 10 ** ((ratingB - ratingA) / 400));
 }
 
-function intervalProbability(ratingA, ratingB, uncertainty) {
-  const lower = expectedScore(ratingA - uncertainty, ratingB + uncertainty);
-  const upper = expectedScore(ratingA + uncertainty, ratingB - uncertainty);
+function peakMidpoint(profile) {
+  const years = String(profile.peak || '').match(/\d{4}/g)?.map(Number) || [];
+  return years.length ? years.reduce((sum, year) => sum + year, 0) / years.length : null;
+}
+
+function eraBridge(profileA, profileB) {
+  const midA = peakMidpoint(profileA);
+  const midB = peakMidpoint(profileB);
+  if (!midA || !midB) return 0.5;
+  const gap = Math.abs(midA - midB);
+  const halfLife = snapshot.model.eraBridgeHalfLifeYears || 32;
+  return 2 ** (-gap / halfLife);
+}
+
+function bridgedScore(ratingA, ratingB, bridge) {
+  return expectedScore(1500 + (ratingA - ratingB) * bridge / 2, 1500 - (ratingA - ratingB) * bridge / 2);
+}
+
+function intervalProbability(ratingA, ratingB, uncertainty, bridge) {
+  const lower = bridgedScore(ratingA - uncertainty, ratingB + uncertainty, bridge);
+  const upper = bridgedScore(ratingA + uncertainty, ratingB - uncertainty, bridge);
   return [Math.round(lower * 100), Math.round(upper * 100)];
 }
 
@@ -84,13 +102,14 @@ export function getCrossEraComparison(driverA, driverB) {
   const profileB = PROFILES[driverB.id] || fallbackProfile(driverB);
   const ratingA = profileA.peakElo;
   const ratingB = profileB.peakElo;
-  const probabilityA = expectedScore(ratingA, ratingB);
+  const bridge = eraBridge(profileA, profileB);
+  const probabilityA = bridgedScore(ratingA, ratingB, bridge);
   const uncertainty = Math.sqrt(profileA.uncertaintyElo ** 2 + profileB.uncertaintyElo ** 2);
   const route = findEvidenceRoute(driverA.id, driverB.id);
   const isDirect = route?.length === 1;
   const routeEvidence = (route || []).reduce((sum, step) => sum + step.observations, 0);
   const dataScore = !route ? 42 : Math.min(96, Math.round((isDirect ? 72 : 56) + Math.min(24, routeEvidence / 3)));
-  const [rangeAStart, rangeAEnd] = intervalProbability(ratingA, ratingB, uncertainty);
+  const [rangeAStart, rangeAEnd] = intervalProbability(ratingA, ratingB, uncertainty, bridge);
 
   return {
     drivers: [
@@ -102,6 +121,7 @@ export function getCrossEraComparison(driverA, driverB) {
     probabilityRangeA: [rangeAStart, rangeAEnd],
     probabilityRangeB: [100 - rangeAEnd, 100 - rangeAStart],
     ratingGap: Math.abs(Math.round(ratingA - ratingB)),
+    eraBridge: Math.round(bridge * 100),
     route,
     isDirect,
     dataScore,

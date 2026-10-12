@@ -182,8 +182,9 @@ export default function CompareWorkbench() {
             <span className="model-chip">Python fitted</span>
           </div>
           <p className="card-copy">
-            The fitter estimates a separate strength for every driver-season, smooths adjacent
-            seasons, and derives each driver’s strongest sustained four-year window.
+            The fitter derives each driver’s strongest sustained four-year window with
+            teammate-caliber normalization and empirical-Bayes shrinkage, preventing lopsided
+            number-two driver priority from distorting cross-era ratings.
           </p>
           <div className="dimension-list">
             {comparison.dimensions.map((dimension) => (
@@ -245,8 +246,8 @@ export default function CompareWorkbench() {
           <h2>Conditions are not eras.</h2>
           <ul>
             <li>Qualifying and race performance are estimated separately before combination.</li>
-            <li>Points and raw win totals are contextual evidence, never the comparison outcome.</li>
-            <li>Only clean, classified two-car teammate race results enter the race component.</li>
+            <li>Teammate quality is normalized so dominating a secondary driver does not inflate a rating over facing World Champions.</li>
+            <li>Cross-era matchups apply bridge attenuation so unsupported edges decay gracefully over multi-decade spans.</li>
             <li>Older records receive wider intervals when timing depth or network links are thinner.</li>
           </ul>
         </article>
