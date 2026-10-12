@@ -1,5 +1,17 @@
 'use client';
 
+import {
+  TrophyIcon,
+  FlagIcon,
+  TrendIcon,
+  TimerIcon,
+  PodiumIcon,
+  TargetIcon,
+  BoltIcon,
+  GridIcon,
+  PointsIcon
+} from './Icons.js';
+
 export default function TaleOfTheTape({ driverA, driverB, metrics }) {
   if (!driverA || !driverB || !metrics) return null;
 
@@ -12,7 +24,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.championships,
       displayB: driverB.championships,
       maxVal: Math.max(driverA.championships, driverB.championships, 1),
-      icon: '🏆'
+      icon: <TrophyIcon size={14} />
     },
     {
       name: 'Grand Prix Wins',
@@ -22,7 +34,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.wins,
       displayB: driverB.wins,
       maxVal: Math.max(driverA.wins, driverB.wins, 1),
-      icon: '🥇'
+      icon: <FlagIcon size={14} />
     },
     {
       name: 'Win Rate %',
@@ -32,7 +44,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: `${metrics.winRateA}%`,
       displayB: `${metrics.winRateB}%`,
       maxVal: Math.max(parseFloat(metrics.winRateA), parseFloat(metrics.winRateB), 1),
-      icon: '📈'
+      icon: <TrendIcon size={14} />
     },
     {
       name: 'Pole Positions',
@@ -42,7 +54,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.poles,
       displayB: driverB.poles,
       maxVal: Math.max(driverA.poles, driverB.poles, 1),
-      icon: '⏱️'
+      icon: <TimerIcon size={14} />
     },
     {
       name: 'Podium Finishes',
@@ -52,7 +64,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.podiums,
       displayB: driverB.podiums,
       maxVal: Math.max(driverA.podiums, driverB.podiums, 1),
-      icon: '🥈'
+      icon: <PodiumIcon size={14} />
     },
     {
       name: 'Podium Rate %',
@@ -62,7 +74,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: `${metrics.podiumRateA}%`,
       displayB: `${metrics.podiumRateB}%`,
       maxVal: Math.max(parseFloat(metrics.podiumRateA), parseFloat(metrics.podiumRateB), 1),
-      icon: '🎯'
+      icon: <TargetIcon size={14} />
     },
     {
       name: 'Fastest Laps',
@@ -72,7 +84,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.fastestLaps || 0,
       displayB: driverB.fastestLaps || 0,
       maxVal: Math.max(driverA.fastestLaps || 0, driverB.fastestLaps || 0, 1),
-      icon: '⚡'
+      icon: <BoltIcon size={14} />
     },
     {
       name: 'Race Starts',
@@ -82,7 +94,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: driverA.starts,
       displayB: driverB.starts,
       maxVal: Math.max(driverA.starts, driverB.starts, 1),
-      icon: '🏁'
+      icon: <GridIcon size={14} />
     },
     {
       name: 'Career Points',
@@ -92,16 +104,16 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
       displayA: Math.round(driverA.points || 0).toLocaleString(),
       displayB: Math.round(driverB.points || 0).toLocaleString(),
       maxVal: Math.max(driverA.points || 0, driverB.points || 0, 1),
-      icon: '🔢'
+      icon: <PointsIcon size={14} />
     }
   ];
 
   return (
     <section className="analytics-section">
       <div className="section-title-bar">
-        <div className="section-title-tag">TELEMETRY STATS</div>
+        <div className="section-title-tag">HEAD-TO-HEAD METRICS</div>
         <h3 className="section-heading">Tale of the Tape</h3>
-        <p className="section-subtext">Direct statistical face-off normalized across all career starts</p>
+        <p className="section-subtext">Direct statistical comparison normalized across all career starts</p>
       </div>
 
       <div className="stat-table-card">
@@ -123,7 +135,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
                 {/* Value A */}
                 <div className={`stat-val stat-val-a ${isWinnerA ? 'winner' : ''}`}>
                   {s.displayA}
-                  {isWinnerA && <span className="winner-badge">▲</span>}
+                  {isWinnerA && <span className="winner-pill">P1</span>}
                 </div>
 
                 {/* Bar A */}
@@ -136,7 +148,10 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
 
                 {/* Center Metric Label */}
                 <div className="stat-label-col">
-                  <div className="stat-name">{s.icon} {s.name}</div>
+                  <div className="stat-name">
+                    <span className="stat-icon-wrapper">{s.icon}</span>
+                    <span>{s.name}</span>
+                  </div>
                   <div className="stat-desc">{s.desc}</div>
                 </div>
 
@@ -150,7 +165,7 @@ export default function TaleOfTheTape({ driverA, driverB, metrics }) {
 
                 {/* Value B */}
                 <div className={`stat-val stat-val-b ${isWinnerB ? 'winner' : ''}`}>
-                  {isWinnerB && <span className="winner-badge">▲</span>}
+                  {isWinnerB && <span className="winner-pill">P1</span>}
                   {s.displayB}
                 </div>
               </div>

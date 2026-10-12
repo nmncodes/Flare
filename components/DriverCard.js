@@ -1,11 +1,12 @@
 'use client';
 
 import { getFallbackAvatar } from '../api.js';
+import { CountryTag, SwapIcon } from './Icons.js';
 
 export default function DriverCard({ driver, bio, side, onOpenModal }) {
   if (!driver) return null;
 
-  const color = driver.color || (side === 'A' ? '#00D2BE' : '#E10600');
+  const color = driver.color || (side === 'A' ? '#0d9488' : '#e10600');
   const teamsFormatted = (driver.teams || ['F1 Team']).join(' • ');
   const imgSrc = bio?.image || (driver?.name ? getFallbackAvatar(driver.name) : null);
 
@@ -17,20 +18,20 @@ export default function DriverCard({ driver, bio, side, onOpenModal }) {
     >
       <div className="card-glass-header">
         <div className="driver-badge-group">
-          <span className="flag-icon" id={`flag${side}`}>{driver.flag || '🏁'}</span>
-          <span className="driver-num-tag" id={`num${side}`}>{driver.number || '-'}</span>
+          <CountryTag nationality={driver.nationality} />
+          <span className="driver-num-tag" id={`num${side}`}>#{driver.number || '-'}</span>
         </div>
         <button
           className="driver-change-btn"
           id={`btnSelect${side}`}
           onClick={() => onOpenModal(side)}
         >
-          <span>⇄ Change Driver</span>
+          <SwapIcon size={12} />
+          <span>Select Driver</span>
         </button>
       </div>
 
       <div className="driver-portrait-container">
-        <div className="portrait-glow-ring" id={`ring${side}`}></div>
         {imgSrc && (
           <img
             src={imgSrc}
@@ -49,12 +50,13 @@ export default function DriverCard({ driver, bio, side, onOpenModal }) {
         <div className="team-pills" id={`teams${side}`}>{teamsFormatted}</div>
       </div>
 
-      <div className="driver-quote-box">
-        <span className="quote-mark">“</span>
-        <p className="quote-text" id={`quote${side}`}>
-          &ldquo;{driver.quote || 'Pushing for victory.'}&rdquo;
-        </p>
-      </div>
+      {driver.quote && (
+        <div className="driver-quote-box">
+          <p className="quote-text" id={`quote${side}`}>
+            {driver.quote}
+          </p>
+        </div>
+      )}
     </article>
   );
 }

@@ -25,35 +25,42 @@ export default function EraBenchmark({ driverA, driverB, bioA, bioB }) {
     if (overlapStart <= overlapEnd) {
       const overlapYears = overlapEnd - overlapStart + 1;
       overlapContent = (
-        <div>
-          ⚔️ <strong>Direct On-Track Contemporaries:</strong> Both drivers shared the grid during the{' '}
-          <strong>{overlapStart}–{overlapEnd}</strong> seasons (approx. {overlapYears} concurrent year{overlapYears > 1 ? 's' : ''}). They fought under the same technical regulations.
+        <div className="overlap-detail">
+          <span className="era-status-tag tag-contemporary">DIRECT CONTEMPORARIES</span>
+          <p>
+            Both drivers competed on-track during the <strong>{overlapStart}–{overlapEnd}</strong> seasons ({overlapYears} concurrent year{overlapYears > 1 ? 's' : ''}) under unified FIA sporting regulations.
+          </p>
         </div>
       );
     } else {
       const gap = overlapStart - overlapEnd;
       overlapContent = (
-        <div>
-          ⏳ <strong>Cross-Era Fantasy Duel:</strong> These legends raced in different eras, separated by approximately{' '}
-          <strong>{gap} seasons</strong>. Comparing them requires normalizing car reliability and points systems across eras.
+        <div className="overlap-detail">
+          <span className="era-status-tag tag-cross-era">CROSS-ERA COMPARISON</span>
+          <p>
+            Raced in distinct regulatory epochs separated by approximately <strong>{gap} seasons</strong>. Performance is evaluated on normalized era dominance.
+          </p>
         </div>
       );
     }
   } else {
-    overlapContent = <div>Comparing historical careers across Formula 1 regulations.</div>;
+    overlapContent = (
+      <div className="overlap-detail">
+        <p>Cross-era Formula 1 career comparison.</p>
+      </div>
+    );
   }
 
   return (
     <div className="analytics-card era-card">
       <div className="card-inner-header">
         <div>
-          <div className="badge-accent">HISTORICAL BENCHMARK</div>
+          <div className="badge-accent">REGULATION BENCHMARK</div>
           <h4 className="card-title">Era Overlap & Dossier</h4>
         </div>
       </div>
 
       <div className="era-status-box" id="overlapBox">
-        <div className="overlap-status-title">ERA COMPARISON BENCHMARK</div>
         {overlapContent}
       </div>
 

@@ -57,7 +57,7 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
           else ctx.lineTo(x, y);
         }
         ctx.closePath();
-        ctx.strokeStyle = l === levels ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)';
+        ctx.strokeStyle = l === levels ? 'rgba(15, 23, 42, 0.14)' : 'rgba(15, 23, 42, 0.06)';
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -76,7 +76,7 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(x, y);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.08)';
         ctx.stroke();
 
         // Label offset
@@ -84,7 +84,7 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
         const lx = cx + Math.cos(a) * labelDistance;
         const ly = cy + Math.sin(a) * labelDistance;
 
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillStyle = '#334155';
         ctx.fillText(labels[i], lx, ly);
       }
 
@@ -107,11 +107,8 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
         ctx.fill();
 
         ctx.strokeStyle = color;
-        ctx.lineWidth = 2.5;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 10;
+        ctx.lineWidth = 2;
         ctx.stroke();
-        ctx.shadowBlur = 0;
 
         // Vertices dots
         for (let i = 0; i < sides; i++) {
@@ -122,7 +119,7 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
           const y = cy + Math.sin(a) * r;
 
           ctx.beginPath();
-          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.arc(x, y, 3.5, 0, Math.PI * 2);
           ctx.fillStyle = '#ffffff';
           ctx.fill();
           ctx.strokeStyle = color;
@@ -132,9 +129,9 @@ export default function RadarCanvas({ labels, dataA, dataB, colorA = '#00D2BE', 
       };
 
       // Draw Driver A
-      drawPolygon(dataA, colorA, 0.28);
+      drawPolygon(dataA, colorA, 0.16);
       // Draw Driver B
-      drawPolygon(dataB, colorB, 0.28);
+      drawPolygon(dataB, colorB, 0.16);
     };
 
     // Smooth ease-out cubic animation

@@ -18,9 +18,6 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <div className="ambient-glow glow-red"></div>
-        <div className="ambient-glow glow-blue"></div>
-        <div className="ambient-grid"></div>
         {children}
       </body>
     </html>

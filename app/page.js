@@ -15,6 +15,7 @@ import TaleOfTheTape from '../components/TaleOfTheTape.js';
 import RadarCanvas from '../components/RadarCanvas.js';
 import EraBenchmark from '../components/EraBenchmark.js';
 import DriverModal from '../components/DriverModal.js';
+import { LogoMark, ShuffleIcon, SwapIcon } from '../components/Icons.js';
 
 export default function Home() {
   const [driverA, setDriverA] = useState(null);
@@ -144,10 +145,10 @@ export default function Home() {
       <header className="app-header">
         <div className="brand-group">
           <div className="logo-box">
-            <span className="logo-icon">🏎️</span>
+            <LogoMark size={24} />
             <span className="logo-text">FLARE</span>
           </div>
-          <span className="app-tagline">Formula 1 Head-to-Head Career Analytics</span>
+          <span className="app-tagline">Formula 1 Career Analytics</span>
         </div>
 
         <div className="header-actions">
@@ -156,14 +157,16 @@ export default function Home() {
             onClick={handleRandomBattle}
             title="Load random iconic battle"
           >
-            <span>🔀 Random Battle</span>
+            <ShuffleIcon size={14} />
+            <span>Random Matchup</span>
           </button>
           <button
             className="header-btn btn-swap"
             onClick={handleSwap}
             title="Swap Driver A and Driver B"
           >
-            <span>⇄ Swap</span>
+            <SwapIcon size={14} />
+            <span>Swap</span>
           </button>
         </div>
       </header>

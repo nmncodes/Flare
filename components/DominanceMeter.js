@@ -12,28 +12,29 @@ export default function DominanceMeter({ driverA, driverB, metrics }) {
   let verdictSummary;
   if (leadDiff < 6) {
     verdictSummary = (
-      <>
-        ⚖️ <strong>Dead Heat:</strong> Historical metrics rate both drivers in an exceptionally close statistical dead-heat across eras.
-      </>
+      <div className="verdict-content">
+        <span className="verdict-badge badge-neutral">PARITY</span>
+        <span className="verdict-copy">Statistical dead-heat across normalized career metrics.</span>
+      </div>
     );
   } else {
     verdictSummary = (
-      <>
-        ⚡ <strong>Career Edge:</strong> <strong>{edgeDriver.name}</strong> holds the overall career index edge (+{leadDiff}%), powered by superior titles and victory conversion.
-      </>
+      <div className="verdict-content">
+        <span className="verdict-badge badge-lead">+{leadDiff}% {edgeDriver.name.split(' ').pop().toUpperCase()}</span>
+        <span className="verdict-copy">Holds overall career index advantage based on title conversion and victory rate.</span>
+      </div>
     );
   }
 
   return (
     <div className="versus-hub">
       <div className="vs-emblem">
-        <div className="vs-glow"></div>
         <span className="vs-text">VS</span>
       </div>
 
       <div className="dominance-meter-card">
         <div className="dom-header">
-          <span className="dom-title">⚡ CAREER DOMINANCE INDEX</span>
+          <span className="dom-title">DOMINANCE INDEX</span>
           <div className="dom-values">
             <span className="dom-val-a" id="domValA">{pctA}%</span>
             <span className="dom-split">/</span>
