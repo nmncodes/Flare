@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { SearchIcon, CloseIcon, CountryTag, LogoMark } from './Icons.js';
 
 export default function DriverModal({
   isOpen,
@@ -33,18 +34,22 @@ export default function DriverModal({
         <div className="modal-header">
           <div className="modal-title-group">
             <h3 className="modal-title">Select Driver {targetSide}</h3>
-            <p className="modal-subtitle">Choose from Hall of Fame legends or search all 850+ historical drivers</p>
+            <p className="modal-subtitle">Filter Hall of Fame champions or search 850+ historical drivers since 1950</p>
           </div>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose} aria-label="Close">
+            <CloseIcon size={14} />
+          </button>
         </div>
 
         {/* Search Input */}
         <div className="modal-search-box">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon">
+            <SearchIcon size={16} />
+          </span>
           <input
             type="text"
             className="driver-search-input"
-            placeholder="Search driver by name, country, or code..."
+            placeholder="Search by driver name, country, or 3-letter code..."
             autoComplete="off"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -53,10 +58,10 @@ export default function DriverModal({
           {searchQuery && (
             <button
               className="clear-search-btn"
-              style={{ display: 'block' }}
               onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
             >
-              ✕
+              <CloseIcon size={14} />
             </button>
           )}
         </div>
@@ -67,13 +72,13 @@ export default function DriverModal({
             className={`tab-btn ${activeTab === 'curated' ? 'active' : ''}`}
             onClick={() => setActiveTab('curated')}
           >
-            ⭐ Curated Legends (Instant)
+            Hall of Fame Legends
           </button>
           <button
             className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
             onClick={() => setActiveTab('all')}
           >
-            🌍 All Historical Drivers (850+)
+            All Historical Drivers (850+)
           </button>
         </div>
 
@@ -81,7 +86,9 @@ export default function DriverModal({
         <div className="modal-driver-list">
           {displayList.length === 0 ? (
             <div className="modal-empty-state">
-              <span className="empty-icon">🏎️</span>
+              <div className="empty-icon-wrap">
+                <LogoMark size={32} />
+              </div>
               <p>No drivers found matching &quot;{searchQuery}&quot;</p>
             </div>
           ) : (
@@ -96,20 +103,22 @@ export default function DriverModal({
                     onClose();
                   }}
                 >
-                  <div className="pick-flag">{driver.flag || '🏁'}</div>
+                  <div className="pick-flag">
+                    <CountryTag nationality={driver.nationality} />
+                  </div>
                   <div className="pick-info">
                     <div className="pick-name">
                       {driver.name}{' '}
                       <span className="pick-code">({driver.code})</span>
                     </div>
                     <div className="pick-sub">
-                      {driver.activeYears || 'Historical Driver'} • {driver.nationality}
+                      {driver.activeYears || 'Historical Driver'} &bull; {driver.nationality}
                     </div>
                   </div>
                   {isCurated && (
                     <div className="pick-stats">
-                      <span className="pick-stat-pill">🏆 {driver.championships}</span>
-                      <span className="pick-stat-pill">🥇 {driver.wins}</span>
+                      <span className="pick-stat-pill">{driver.championships} WDC</span>
+                      <span className="pick-stat-pill">{driver.wins} WINS</span>
                     </div>
                   )}
                 </div>
