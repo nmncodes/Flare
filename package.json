@@ -1,10 +1,12 @@
 {
-  "name": "apex-duel-f1",
+  "name": "flare-f1",
   "version": "1.0.0",
+  "type": "module",
   "description": "F1 Career Head-to-Head Analytics Engine powered by Jolpica F1 and Wikipedia APIs",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx serve ."
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "keywords": [
     "f1",
@@ -15,5 +17,10 @@
     "analytics"
   ],
   "author": "Antigravity Pair Programmer",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
 }
