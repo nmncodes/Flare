@@ -53,6 +53,7 @@ const el = {
   domBarA: document.getElementById('domBarA'),
   domBarB: document.getElementById('domBarB'),
   duelVerdict: document.getElementById('duelVerdict'),
+  // verdicts
 
   // Stats table
   statRows: document.getElementById('statRows'),
