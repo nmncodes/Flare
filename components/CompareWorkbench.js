@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { CURATED_DRIVERS } from '../data/drivers.js';
 import { getCrossEraComparison } from '../data/crossEraModel.js';
 import { LogoMark, SwapIcon } from './Icons.js';
+import Leaderboard from './Leaderboard.js';
 
 const PRESETS = [
   { label: 'Senna / Prost', a: 'senna', b: 'prost' },
@@ -104,6 +105,9 @@ export default function CompareWorkbench() {
             <span>Career Comparison</span>
           </Link>
           <span className="header-btn compare-nav-active">Cross-Era Lab</span>
+          <a className="header-btn" href="#leaderboard">
+            <span>Leaderboard</span>
+          </a>
         </nav>
       </header>
 
@@ -239,6 +243,14 @@ export default function CompareWorkbench() {
           </div>
         </article>
       </section>
+
+      {/* All-Time Peak Elo Leaderboard */}
+      <Leaderboard
+        onSelectDriverA={setDriverAId}
+        onSelectDriverB={setDriverBId}
+        selectedDriverAId={driverAId}
+        selectedDriverBId={driverBId}
+      />
 
       <section className="compare-grid methodology-grid">
         <article className="compare-card method-card">

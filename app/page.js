@@ -156,6 +156,9 @@ export default function Home() {
           <Link className="header-btn" href="/compare" title="Open the cross-era comparison lab">
             <span>Cross-Era Lab</span>
           </Link>
+          <Link className="header-btn" href="/compare#leaderboard" title="View all-time F1 peak Elo leaderboard">
+            <span>Leaderboard</span>
+          </Link>
           <button
             className="header-btn btn-random"
             onClick={handleRandomBattle}
