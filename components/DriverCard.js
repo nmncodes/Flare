@@ -1,10 +1,13 @@
 'use client';
 
+import { getFallbackAvatar } from '../api.js';
+
 export default function DriverCard({ driver, bio, side, onOpenModal }) {
   if (!driver) return null;
 
   const color = driver.color || (side === 'A' ? '#00D2BE' : '#E10600');
   const teamsFormatted = (driver.teams || ['F1 Team']).join(' • ');
+  const imgSrc = bio?.image || (driver?.name ? getFallbackAvatar(driver.name) : null);
 
   return (
     <article
@@ -28,12 +31,14 @@ export default function DriverCard({ driver, bio, side, onOpenModal }) {
 
       <div className="driver-portrait-container">
         <div className="portrait-glow-ring" id={`ring${side}`}></div>
-        <img
-          src={bio?.image || ''}
-          alt={`${driver.name} portrait`}
-          className="driver-portrait-img"
-          id={`img${side}`}
-        />
+        {imgSrc && (
+          <img
+            src={imgSrc}
+            alt={`${driver.name} portrait`}
+            className="driver-portrait-img"
+            id={`img${side}`}
+          />
+        )}
       </div>
 
       <div className="driver-meta">
