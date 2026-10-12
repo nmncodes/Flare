@@ -908,13 +908,34 @@ body {
   line-height: 1.5;
 }
 
-.overlap-status-title {
+.overlap-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.era-status-tag {
+  display: inline-block;
+  align-self: flex-start;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   font-weight: 800;
-  color: var(--victory-gold);
   letter-spacing: 1px;
-  margin-bottom: 4px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.tag-contemporary {
+  background: var(--success-bg);
+  color: var(--success-green);
+  border: 1px solid var(--success-border);
+}
+
+.tag-cross-era {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
 }
 
 .bio-dossiers {
@@ -1151,11 +1172,12 @@ body {
   color: var(--text-muted);
 }
 
-.empty-icon {
-  font-size: 2.2rem;
-  display: block;
+.empty-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 12px;
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .driver-pick-item {
