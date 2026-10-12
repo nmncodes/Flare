@@ -1,0 +1,19 @@
+{
+  "name": "apex-duel-f1",
+  "version": "1.0.0",
+  "description": "F1 Career Head-to-Head Analytics Engine powered by Jolpica F1 and Wikipedia APIs",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "f1",
+    "formula1",
+    "jolpica",
+    "racing",
+    "telemetry",
+    "analytics"
+  ],
+  "author": "Antigravity Pair Programmer",
+  "license": "MIT"
+}

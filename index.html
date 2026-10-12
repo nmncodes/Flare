@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APEX DUEL — Formula 1 Head-to-Head Career Analytics</title>
+  <meta name="description" content="Compare any two Formula 1 drivers in history head-to-head. Interactive career stats, radar chart, win percentages, and dominance ratings powered by Jolpica F1.">
+  <meta name="keywords" content="F1, Formula 1, Driver Comparison, Hamilton, Verstappen, Senna, Schumacher, Jolpica F1, Telemetry, Ergast, Racing Analytics">
+  <meta name="theme-color" content="#0b0e14">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="APEX DUEL — Formula 1 Head-to-Head Career Analytics">
+  <meta property="og:description" content="The ultimate free Formula 1 driver comparison engine. Compare WDC, wins, poles, podium rate, and multi-axis performance radar.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Titillium Web & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Titillium+Web:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Racing Ambient Background -->
+  <div class="ambient-glow glow-red"></div>
+  <div class="ambient-glow glow-blue"></div>
+  <div class="ambient-grid"></div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-wrapper">
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="racing-stripes">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">APEX<span class="text-accent">DUEL</span></h1>
+          <p class="brand-subtitle">F1 CAREER HEAD-TO-HEAD ANALYTICS</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <span class="status-chip live-pulse">
+          <span class="pulse-dot"></span>
+          JOLPICA F1 ENGINE
+        </span>
+        <span class="status-chip free-badge">
+          100% FREE • ZERO KEYS
+        </span>
+        <button id="btnRandomBattle" class="btn-action btn-sm" title="Roll a random legendary matchup">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Random Duel
+        </button>
+      </div>
+    </header>
+
+    <!-- Preset Matchup Pills Bar -->
+    <section class="preset-section" aria-label="Iconic Rivalries">
+      <div class="preset-label">ICONIC RIVALRIES:</div>
+      <div class="preset-carousel" id="presetPills">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Main Comparison Arena: Driver A vs Driver B -->
+    <main class="arena-container">
+      
+      <!-- Driver A Card -->
+      <section class="driver-card" id="cardDriverA">
+        <div class="card-glass-glow"></div>
+        <div class="card-header-bar">
+          <div class="corner-flag" id="flagA">🇬🇧</div>
+          <button class="btn-select-driver" id="btnSelectA">
+            <span>Change Driver</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+
+        <div class="driver-media-wrap">
+          <div class="driver-number" id="numA">44</div>
+          <div class="avatar-ring" id="ringA">
+            <img id="imgA" src="" alt="Driver A Portrait" class="driver-avatar" loading="lazy">
+          </div>
+        </div>
+
+        <div class="driver-meta">
+          <span class="driver-code-badge" id="codeA">HAM</span>
+          <h2 class="driver-name" id="nameA">Lewis Hamilton</h2>
+          <div class="driver-sub-details">
+            <span id="activeYearsA">2007 - Present</span> • <span id="nationalityA">British</span>
+          </div>
+          <div class="driver-teams" id="teamsA">McLaren • Mercedes • Ferrari</div>
+        </div>
+
+        <blockquote class="driver-quote" id="quoteA">
+          "Still we rise."
+        </blockquote>
+      </section>
+
+      <!-- Center Versus & Dominance Meter -->
+      <section class="versus-hub" aria-label="Versus Breakdown">
+        <button id="btnSwapDrivers" class="btn-swap" title="Swap sides">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l4-4M17 20l-4-4"/></svg>
+        </button>
+
+        <div class="vs-emblem">
+          <span class="vs-text">VS</span>
+        </div>
+
+        <div class="dominance-meter-wrap">
+          <div class="dominance-header">
+            <span class="dom-val dom-val-a" id="domValA">50%</span>
+            <span class="dom-title">CAREER DOMINANCE</span>
+            <span class="dom-val dom-val-b" id="domValB">50%</span>
+          </div>
+          <div class="dom-track">
+            <div class="dom-bar dom-bar-a" id="domBarA" style="width: 50%;"></div>
+            <div class="dom-bar dom-bar-b" id="domBarB" style="width: 50%;"></div>
+          </div>
+        </div>
+
+        <div class="duel-quick-verdict" id="duelVerdict">
+          Calculating career edge...
+        </div>
+      </section>
+
+      <!-- Driver B Card -->
+      <section class="driver-card" id="cardDriverB">
+        <div class="card-glass-glow"></div>
+        <div class="card-header-bar">
+          <button class="btn-select-driver" id="btnSelectB">
+            <span>Change Driver</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="corner-flag" id="flagB">🇩🇪</div>
+        </div>
+
+        <div class="driver-media-wrap">
+          <div class="driver-number" id="numB">1</div>
+          <div class="avatar-ring" id="ringB">
+            <img id="imgB" src="" alt="Driver B Portrait" class="driver-avatar" loading="lazy">
+          </div>
+        </div>
+
+        <div class="driver-meta">
+          <span class="driver-code-badge" id="codeB">MSC</span>
+          <h2 class="driver-name" id="nameB">Michael Schumacher</h2>
+          <div class="driver-sub-details">
+            <span id="activeYearsB">1991 - 2012</span> • <span id="nationalityB">German</span>
+          </div>
+          <div class="driver-teams" id="teamsB">Benetton • Ferrari • Mercedes</div>
+        </div>
+
+        <blockquote class="driver-quote" id="quoteB">
+          "I've always believed that you should never give up."
+        </blockquote>
+      </section>
+
+    </main>
+
+    <!-- Tale of the Tape: Comparative Metric Bars -->
+    <section class="stats-section">
+      <div class="section-title-wrap">
+        <h3 class="section-title">TALE OF THE TAPE</h3>
+        <p class="section-subtitle">Head-to-head career honors, efficiency ratings, and milestone stats</p>
+      </div>
+
+      <div class="stat-rows-container" id="statRows">
+        <!-- Dynamically populated stat comparison rows -->
+      </div>
+    </section>
+
+    <!-- Deep-Dive Analytics: Radar Spider Chart & Bio Overlap -->
+    <section class="analytics-grid">
+      
+      <!-- 6-Axis Radar Spider Chart -->
+      <div class="analytics-card radar-card">
+        <div class="analytics-card-header">
+          <div>
+            <h4 class="card-heading">PERFORMANCE RADAR</h4>
+            <p class="card-subheading">Multi-axis normalized rating across eras</p>
+          </div>
+          <div class="radar-legend">
+            <span class="legend-item"><span class="legend-dot dot-a" id="legendDotA"></span> <span id="legendNameA">Driver A</span></span>
+            <span class="legend-item"><span class="legend-dot dot-b" id="legendDotB"></span> <span id="legendNameB">Driver B</span></span>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="radarCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Historical Context & Career Overlap -->
+      <div class="analytics-card context-card">
+        <div class="analytics-card-header">
+          <h4 class="card-heading">HISTORICAL ERA CONTEXT</h4>
+          <p class="card-subheading">Career overlap, Wikipedia archives & insights</p>
+        </div>
+
+        <div class="overlap-box" id="overlapBox">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="driver-bios-split">
+          <div class="bio-block" id="bioBlockA">
+            <div class="bio-name" id="bioNameA">Driver A</div>
+            <p class="bio-text" id="bioTextA">Loading driver archives...</p>
+          </div>
+          <div class="bio-divider"></div>
+          <div class="bio-block" id="bioBlockB">
+            <div class="bio-name" id="bioNameB">Driver B</div>
+            <p class="bio-text" id="bioTextB">Loading driver archives...</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <strong>APEX DUEL</strong> — Open-Source F1 Career Benchmark Engine
+      </div>
+      <div class="footer-center">
+        Data verified via <a href="https://github.com/jolpica/jolpica-f1" target="_blank" rel="noopener">Jolpica F1</a> (Community Ergast) & <a href="https://www.wikipedia.org" target="_blank" rel="noopener">Wikimedia</a>.
+      </div>
+      <div class="footer-right">
+        100% Free • No API Key Limits
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Driver Selector Modal -->
+  <div class="modal-backdrop" id="driverModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3 class="modal-title">Select Formula 1 Driver</h3>
+          <p class="modal-subtitle">Pick from Champions, Legends, or search all 850+ historical drivers</p>
+        </div>
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="search-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="driverSearchInput" placeholder="Search driver by name, code (e.g. HAM, Senna, Fangio)..." autocomplete="off">
+        <button id="clearSearchBtn" class="clear-search-btn" style="display:none;">&times;</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="curated">Hall of Fame & Active Grid</button>
+        <button class="tab-btn" data-tab="historical">All Historical Drivers (Jolpica)</button>
+      </div>
+
+      <div class="modal-driver-list" id="modalDriverList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Bundle -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
