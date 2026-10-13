@@ -9,7 +9,9 @@
     "start": "next start",
     "model:build": "python python/build_cross_era_snapshot.py",
     "goat:build": "python python/goat_composite_ranking.py",
-    "goat:test": "python python/goat_composite_ranking.py --test"
+    "goat:test": "python python/goat_composite_ranking.py --test",
+    "goat:model1": "python python/goat_composite_ranking.py --model 1",
+    "goat:both": "python python/goat_composite_ranking.py --model all"
   },
   "keywords": [
     "f1",

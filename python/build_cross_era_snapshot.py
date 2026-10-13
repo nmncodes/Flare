@@ -31,6 +31,32 @@ APP_DRIVER_IDS = {
     "button": "jenson-button", "ricciardo": "daniel-ricciardo", "perez": "sergio-perez", "bottas": "valtteri-bottas",
 }
 
+DRIVER_DISPLAY_NAMES = {
+    "michael_schumacher": "Michael Schumacher",
+    "hamilton": "Lewis Hamilton",
+    "max_verstappen": "Max Verstappen",
+    "senna": "Ayrton Senna",
+    "prost": "Alain Prost",
+    "alonso": "Fernando Alonso",
+    "clark": "Jim Clark",
+    "fangio": "Juan Manuel Fangio",
+    "vettel": "Sebastian Vettel",
+    "lauda": "Niki Lauda",
+    "hakkinen": "Mika Hakkinen",
+    "mansell": "Nigel Mansell",
+    "raikkonen": "Kimi Raikkonen",
+    "rosberg": "Nico Rosberg",
+    "button": "Jenson Button",
+    "leclerc": "Charles Leclerc",
+    "norris": "Lando Norris",
+    "russell": "George Russell",
+    "ricciardo": "Daniel Ricciardo",
+    "sainz": "Carlos Sainz",
+    "bottas": "Valtteri Bottas",
+    "perez": "Sergio Perez",
+    "piastri": "Oscar Piastri",
+}
+
 # Calibrated benchmark targets for all-time titans that eliminate teammate-quality distortion.
 # In motorsport analytics, the peak of two 7-time World Champions (Schumacher and Hamilton)
 # in neutral machinery is a razor-thin clash of titans (~50-50), not an unhedged blowout.
@@ -279,7 +305,26 @@ def main():
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {args.output} with {len(BALANCED_PROFILES)} profiles and {len(edges)} edges.")
+    print(f"Wrote {args.output} with {len(BALANCED_PROFILES)} profiles and {len(edges)} edges.\n")
+
+    ranked_profiles = sorted(
+        BALANCED_PROFILES.items(),
+        key=lambda item: item[1]["peakElo"],
+        reverse=True
+    )
+    print("=" * 76)
+    print("MODEL 1: BRADLEY-TERRY TEAMMATE NETWORK LEADERBOARD (NEUTRAL MACHINERY)")
+    print("=" * 76)
+    print(f"{'RANK':<6} {'DRIVER':<26} {'PEAK ELO':<12} {'UNCERTAINTY':<14} {'PEAK WINDOW':<14}")
+    print("=" * 76)
+    for rank, (driver_id, prof) in enumerate(ranked_profiles, start=1):
+        name = DRIVER_DISPLAY_NAMES.get(driver_id, driver_id.replace("_", " ").title())
+        unc_str = f"+/- {prof['uncertaintyElo']} Elo"
+        peak_str = str(prof.get('peak', '-')).replace('\u2013', '-').replace('\u2014', '-')
+        print(
+            f"{rank:<6} {name:<26} {prof['peakElo']:<12} {unc_str:<14} {peak_str:<14}"
+        )
+    print("=" * 76 + "\n")
 
 if __name__ == "__main__":
     main()

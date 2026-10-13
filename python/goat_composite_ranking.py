@@ -432,9 +432,9 @@ class GOATRankingPipeline:
             )
             rows.append(row)
 
-        # Sort descending by composite_score, tie-broken by era_adjusted_elo and raw_peak_elo
+        # Sort descending by era_adjusted_elo, tie-broken by composite_score and raw_peak_elo
         rows.sort(
-            key=lambda r: (r.composite_score, r.era_adjusted_elo, r.raw_peak_elo),
+            key=lambda r: (r.era_adjusted_elo, r.composite_score, r.raw_peak_elo),
             reverse=True,
         )
 
@@ -782,6 +782,84 @@ def run_self_tests() -> bool:
     return True
 
 
+def print_model_1_table(top_n: int = 25) -> None:
+    """Print the Model 1 Bradley-Terry Teammate Peak Elo leaderboard."""
+    snapshot_path = Path(__file__).resolve().parents[1] / "data" / "cross-era-snapshot.json"
+    if not snapshot_path.exists():
+        print("Model 1 snapshot not found. Run 'npm run model:build' first.")
+        return
+    with open(snapshot_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    profiles = data.get("profiles", {})
+    ranked = sorted(profiles.items(), key=lambda it: it[1]["peakElo"], reverse=True)
+
+    app_to_name = {
+        "michael_schumacher": "Michael Schumacher", "hamilton": "Lewis Hamilton", "max_verstappen": "Max Verstappen",
+        "senna": "Ayrton Senna", "prost": "Alain Prost", "alonso": "Fernando Alonso", "clark": "Jim Clark",
+        "fangio": "Juan Manuel Fangio", "vettel": "Sebastian Vettel", "lauda": "Niki Lauda", "hakkinen": "Mika Hakkinen",
+        "mansell": "Nigel Mansell", "raikkonen": "Kimi Raikkonen", "rosberg": "Nico Rosberg", "button": "Jenson Button",
+        "leclerc": "Charles Leclerc", "norris": "Lando Norris", "russell": "George Russell", "ricciardo": "Daniel Ricciardo",
+        "sainz": "Carlos Sainz", "bottas": "Valtteri Bottas", "perez": "Sergio Perez", "piastri": "Oscar Piastri",
+    }
+    print("\n" + "=" * 76)
+    print("MODEL 1: BRADLEY-TERRY TEAMMATE NETWORK LEADERBOARD (NEUTRAL MACHINERY)")
+    print("=" * 76)
+    print(f"{'RANK':<6} {'DRIVER':<26} {'PEAK ELO':<12} {'UNCERTAINTY':<14} {'PEAK WINDOW':<14}")
+    print("=" * 76)
+    for rank, (driver_id, prof) in enumerate(ranked[:top_n], start=1):
+        name = app_to_name.get(driver_id, driver_id.replace("_", " ").title())
+        unc_str = f"+/- {prof.get('uncertaintyElo', 40)} Elo"
+        peak_str = str(prof.get('peak', '-')).replace('\u2013', '-').replace('\u2014', '-')
+        print(f"{rank:<6} {name:<26} {prof['peakElo']:<12} {unc_str:<14} {peak_str:<14}")
+    print("=" * 76 + "\n")
+
+
+def print_comparison_table(leaderboard: List[GOATLeaderboardRow]) -> None:
+    """Print side-by-side comparison between Model 1 (Teammate) and Model 2 (Career Elo)."""
+    snapshot_path = Path(__file__).resolve().parents[1] / "data" / "cross-era-snapshot.json"
+    if not snapshot_path.exists():
+        return
+    with open(snapshot_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    profiles = data.get("profiles", {})
+    ranked_m1 = sorted(profiles.items(), key=lambda it: it[1]["peakElo"], reverse=True)
+
+    app_to_name = {
+        "michael_schumacher": "Michael Schumacher", "hamilton": "Lewis Hamilton", "max_verstappen": "Max Verstappen",
+        "senna": "Ayrton Senna", "prost": "Alain Prost", "alonso": "Fernando Alonso", "clark": "Jim Clark",
+        "fangio": "Juan Manuel Fangio", "vettel": "Sebastian Vettel", "lauda": "Niki Lauda", "hakkinen": "Mika Hakkinen",
+        "mansell": "Nigel Mansell", "raikkonen": "Kimi Raikkonen", "rosberg": "Nico Rosberg", "button": "Jenson Button",
+        "leclerc": "Charles Leclerc", "norris": "Lando Norris", "russell": "George Russell", "ricciardo": "Daniel Ricciardo",
+        "sainz": "Carlos Sainz", "bottas": "Valtteri Bottas", "perez": "Sergio Perez", "piastri": "Oscar Piastri",
+    }
+
+    m2_map = {}
+    for r in leaderboard:
+        if r.app_driver_id:
+            m2_map[r.app_driver_id] = (r.rank, r.era_adjusted_elo)
+
+    print("\n" + "=" * 82)
+    print("SIDE-BY-SIDE: MODEL 1 (TEAMMATE PEAK) vs MODEL 2 (GOAT CAREER ELO)")
+    print("=" * 82)
+    print(f"{'DRIVER':<22} {'MODEL 1 (TEAMMATE)':<20} {'MODEL 2 (GOAT ELO)':<20} {'RANK SHIFT':<16}")
+    print("=" * 82)
+    for driver_id, prof in ranked_m1:
+        m1_rank = next(idx for idx, (did, _) in enumerate(ranked_m1, start=1) if did == driver_id)
+        m1_elo = prof["peakElo"]
+        name = app_to_name.get(driver_id, driver_id)
+        if driver_id in m2_map:
+            m2_rank, m2_elo = m2_map[driver_id]
+            shift = m1_rank - m2_rank  # positive means higher rank in model 2
+            if shift > 0:
+                shift_str = f"+{shift} in Model 2"
+            elif shift < 0:
+                shift_str = f"{shift} in Model 2"
+            else:
+                shift_str = f"Equal (#{m1_rank})"
+            print(f"{name:<22} #{m1_rank:<2} ({m1_elo:<4} Elo)      #{m2_rank:<2} ({m2_elo:<6.1f} Elo)     {shift_str:<16}")
+    print("=" * 82 + "\n")
+
+
 # ---------------------------------------------------------------------------
 # CLI Entrypoint
 # ---------------------------------------------------------------------------
@@ -811,6 +889,9 @@ def main() -> None:
     parser.add_argument("--era-curve-gamma", type=float, default=1.0, help="Power curve exponent for era depth progression.")
     parser.add_argument("--test", action="store_true", help="Run comprehensive unit test suite.")
     parser.add_argument("--top-display", type=int, default=25, help="Number of top drivers to print in console table.")
+    parser.add_argument("--verbose", action="store_true", help="Print full diagnostic metrics table (Z-scores, era depth, normalized scores).")
+    parser.add_argument("--model", choices=["1", "2", "all"], default="2", help="Select model to display: 1 (Model 1: Teammate Peak Elo), 2 (Model 2: GOAT Career Elo), or all (both side-by-side).")
+    parser.add_argument("--model1", action="store_true", help="Shortcut to display Model 1 (Bradley-Terry Teammate Peak Elo).")
 
     args = parser.parse_args()
 
@@ -875,17 +956,39 @@ def main() -> None:
     print(f"Exported CSV -> {csv_path}")
     print(f"Exported JSON -> {json_path}")
 
-    # Display Top Table
-    print("\n" + "=" * 130)
-    print(f"{'RANK':<5} {'NAME':<24} {'RAW PEAK':<10} {'RAW Z-PK':<10} {'ERA DEPTH':<10} {'ADJ Z-PK':<10} {'NORM PK':<9} {'NORM PR':<9} {'ADJ ELO':<9} {'ENP SCORE':<10}")
-    print("=" * 130)
-    for row in leaderboard[: args.top_display]:
-        print(
-            f"{row.rank:<5} {row.name[:23]:<24} {row.raw_peak_elo:<10.1f} {row.raw_z_peak:<10.2f} "
-            f"{f'{row.era_discount_factor*100:.0f}%':<10} {row.z_peak:<10.2f} {row.norm_peak:<9.1f} "
-            f"{row.norm_prime:<9.1f} {row.era_adjusted_elo:<9.1f} {row.composite_score:<10.1f}"
-        )
-    print("=" * 130 + "\n")
+    # Display Tables Based on Selected Model
+    show_model_1 = args.model in ("1", "all") or args.model1
+    show_model_2 = args.model in ("2", "all") and not args.model1
+
+    if show_model_1:
+        print_model_1_table(args.top_display)
+
+    if show_model_2:
+        if args.verbose:
+            print("\n" + "=" * 130)
+            print(f"{'RANK':<5} {'NAME':<24} {'RAW PEAK':<10} {'RAW Z-PK':<10} {'ERA DEPTH':<10} {'ADJ Z-PK':<10} {'NORM PK':<9} {'NORM PR':<9} {'ADJ ELO':<9} {'ENP SCORE':<10}")
+            print("=" * 130)
+            for row in leaderboard[: args.top_display]:
+                print(
+                    f"{row.rank:<5} {row.name[:23]:<24} {row.raw_peak_elo:<10.1f} {row.raw_z_peak:<10.2f} "
+                    f"{f'{row.era_discount_factor*100:.0f}%':<10} {row.z_peak:<10.2f} {row.norm_peak:<9.1f} "
+                    f"{row.norm_prime:<9.1f} {row.era_adjusted_elo:<9.1f} {row.composite_score:<10.1f}"
+                )
+            print("=" * 130 + "\n")
+        else:
+            print("\n" + "=" * 76)
+            print("MODEL 2: ALL-TIME GOAT COMPOSITE ELO LEADERBOARD (CAREER RESUME & WINS)")
+            print("=" * 76)
+            print(f"{'RANK':<6} {'DRIVER':<26} {'ERA-ADJUSTED ELO':<18} {'PEAK ELO':<12} {'CAREER ELO':<12}")
+            print("=" * 76)
+            for row in leaderboard[: args.top_display]:
+                print(
+                    f"{row.rank:<6} {row.name[:25]:<26} {row.era_adjusted_elo:<18.1f} {row.raw_peak_elo:<12.1f} {row.raw_overall_elo:<12.1f}"
+                )
+            print("=" * 76 + "\n")
+
+    if args.model == "all":
+        print_comparison_table(leaderboard)
 
 
 if __name__ == "__main__":

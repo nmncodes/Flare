@@ -13,18 +13,9 @@ const ERA_TABS = [
   { id: 'historic', label: 'Golden Age (1950s–1960s)' }
 ];
 
-const MODEL_MODES = [
-  { id: 'goat', label: 'Era-Normalized Performance Index (60/40)' },
-  { id: 'bradley_terry', label: 'Bradley-Terry Teammate Peak' }
-];
-
 const SORT_OPTIONS = [
-  { id: 'compositeScore', label: 'Era-Normalized Performance Score (60/40)' },
-  { id: 'eraAdjustedElo', label: 'Era-Adjusted Display Elo' },
+  { id: 'unifiedScore', label: 'ENP Score' },
   { id: 'eraDiscountFactor', label: 'Era Talent Depth %' },
-  { id: 'zPeak', label: 'Adjusted Peak Z-Score (σ)' },
-  { id: 'rawZPeak', label: 'Raw Unpenalized Z-Peak (σ)' },
-  { id: 'peakElo', label: 'Bradley-Terry Peak Elo' },
   { id: 'pace', label: 'Qualifying Pace' },
   { id: 'race', label: 'Race Pace' },
   { id: 'execution', label: 'Peak Overall' },
@@ -39,13 +30,16 @@ export default function Leaderboard({
   selectedDriverAId,
   selectedDriverBId
 }) {
-  const [modelMode, setModelMode] = useState('goat');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeEra, setActiveEra] = useState('all');
-  const [sortBy, setSortBy] = useState('compositeScore');
+  const [sortBy, setSortBy] = useState('unifiedScore');
 
-  // Combine curated driver biographical data with snapshot profiles and GOAT rankings
+  // Compute the single, unified ENP Score (fusing Career Era Dominance + Bradley-Terry Teammate Peak)
   const allDrivers = useMemo(() => {
+    const btElos = CURATED_DRIVERS.map((d) => snapshot.profiles[d.id]?.peakElo || 1500);
+    const minBt = Math.min(...btElos);
+    const maxBt = Math.max(...btElos);
+
     return CURATED_DRIVERS.map((driver) => {
       const profile = snapshot.profiles[driver.id] || {};
       const goat = GOAT_RANKINGS_BY_ID.get(driver.id) || {};
@@ -56,6 +50,12 @@ export default function Leaderboard({
       if (startYear < 1970) eraCategory = 'historic';
       else if (startYear < 1990) eraCategory = 'classic';
       else if (startYear < 2010) eraCategory = 'v10';
+
+      const peakElo = profile.peakElo || 1500;
+      const compositeScore = goat.composite_score ?? 60.0;
+      const normBt = maxBt > minBt ? ((peakElo - minBt) / (maxBt - minBt)) * 100 : 50;
+      // Single fused ENP Score (Era-Normalized Performance Score)
+      const unifiedScore = Number((0.5 * compositeScore + 0.5 * normBt).toFixed(1));
 
       return {
         id: driver.id,
@@ -69,7 +69,7 @@ export default function Leaderboard({
         wins: driver.wins || 0,
         poles: driver.poles || 0,
         podiums: driver.podiums || 0,
-        peakElo: profile.peakElo || 1500,
+        peakElo,
         uncertaintyElo: profile.uncertaintyElo || 50,
         tqi: profile.tqi || 50,
         pace: profile.pace || 50,
@@ -78,8 +78,10 @@ export default function Leaderboard({
         adaptability: profile.adaptability || 50,
         peak: profile.peak || driver.activeYears,
         eraCategory,
-        // GOAT composite pipeline metrics
-        compositeScore: goat.composite_score ?? 60.0,
+        // The one score
+        unifiedScore,
+        compositeScore,
+        normBt: Number(normBt.toFixed(1)),
         eraAdjustedElo: goat.era_adjusted_elo ?? 2200.0,
         zPeak: goat.z_peak ?? 2.0,
         zPrime: goat.z_prime_avg ?? 2.0,
@@ -91,7 +93,7 @@ export default function Leaderboard({
         rawPeakElo: goat.raw_peak_elo ?? profile.peakElo ?? 1500,
         rawOverallElo: goat.raw_overall_elo ?? 1500,
         goatRank: goat.rank ?? 99,
-        peakWindowLabel: goat.peak_window_label || profile.peak || driver.activeYears,
+        peakWindowLabel: profile.peak || goat.peak_window_label || driver.activeYears,
       };
     });
   }, []);
@@ -118,18 +120,17 @@ export default function Leaderboard({
         if (b[sortBy] !== a[sortBy]) {
           return b[sortBy] - a[sortBy];
         }
-        // Fallback tie-breaker: compositeScore then peak Elo then wins
-        if (b.compositeScore !== a.compositeScore) return b.compositeScore - a.compositeScore;
+        // Fallback tie-breaker: unifiedScore then peakElo then wins
+        if (b.unifiedScore !== a.unifiedScore) return b.unifiedScore - a.unifiedScore;
         if (b.peakElo !== a.peakElo) return b.peakElo - a.peakElo;
         return b.wins - a.wins;
       });
   }, [allDrivers, searchQuery, activeEra, sortBy]);
 
-  // Overall absolute top 3 for the podium showcase based on active model mode
+  // Overall absolute top 3 for the podium showcase
   const topThree = useMemo(() => {
-    const key = modelMode === 'goat' ? 'compositeScore' : 'peakElo';
-    return [...allDrivers].sort((a, b) => b[key] - a[key]).slice(0, 3);
-  }, [allDrivers, modelMode]);
+    return [...allDrivers].sort((a, b) => b.unifiedScore - a.unifiedScore).slice(0, 3);
+  }, [allDrivers]);
 
   const handleSelectA = (id) => {
     if (onSelectDriverA) onSelectDriverA(id);
@@ -143,59 +144,23 @@ export default function Leaderboard({
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleModeChange = (mode) => {
-    setModelMode(mode);
-    if (mode === 'goat') {
-      setSortBy('compositeScore');
-    } else {
-      setSortBy('peakElo');
-    }
-  };
-
   return (
     <section id="leaderboard" className="analytics-section leaderboard-section" aria-label="All-Time F1 Driver Leaderboard">
       <div className="leaderboard-header">
         <div>
           <div className="section-title-tag">ALL-TIME BENCHMARK RANKINGS</div>
           <h2 className="section-heading">
-            {modelMode === 'goat' ? 'All-Time Era-Normalized Performance Leaderboard' : 'All-Time Peak Elo Leaderboard'}
+            All-Time F1 ENP Score Leaderboard
           </h2>
           <p className="section-subtext">
-            {modelMode === 'goat'
-              ? 'Era-Normalized Z-score ranking with sustained 3-season rolling peak (60%), 5-season prime longevity (40%), and era talent-pool depth calibration to counter early gentleman-driver variance.'
-              : 'All 23 curated drivers ranked by peak Elo across their best sustained 4-year window, calibrated for teammate quality and neutral machinery.'}
+            All 23 curated champions ranked by their unified ENP Score (Era-Normalized Performance Score), balancing career era dominance and neutral-machinery teammate peak into a single definitive metric.
           </p>
         </div>
         <div className="leaderboard-stats-chip">
-          {modelMode === 'goat' ? (
-            <>
-              <span>Top Performance Score <strong>{topThree[0]?.compositeScore} / 100</strong></span>
-              <span>•</span>
-              <span>Era Apex Elo <strong>{topThree[0]?.eraAdjustedElo}</strong></span>
-            </>
-          ) : (
-            <>
-              <span>Field Baseline <strong>1500 Elo</strong></span>
-              <span>•</span>
-              <span>Apex Peak <strong>{topThree[0]?.peakElo} Elo</strong></span>
-            </>
-          )}
+          <span>Apex ENP Score <strong>{topThree[0]?.unifiedScore} / 100</strong></span>
+          <span>•</span>
+          <span>Benchmark Grid <strong>23 Champions</strong></span>
         </div>
-      </div>
-
-      {/* Model Mode Switcher */}
-      <div className="model-mode-switcher" role="tablist" aria-label="Choose ranking methodology">
-        {MODEL_MODES.map((mode) => (
-          <button
-            key={mode.id}
-            role="tab"
-            aria-selected={modelMode === mode.id}
-            className={`mode-pill-btn ${modelMode === mode.id ? 'active' : ''}`}
-            onClick={() => handleModeChange(mode.id)}
-          >
-            {mode.label}
-          </button>
-        ))}
       </div>
 
       {/* Podium Showcase (Top 3) */}
@@ -211,7 +176,7 @@ export default function Leaderboard({
             <article key={driver.id} className={`podium-card podium-${podiumClass}`} style={{ '--podium-accent': driver.color }}>
               <div className="podium-topline">
                 <span className="podium-medal">{medal} Rank #{rank}</span>
-                <span className="podium-era">{modelMode === 'goat' ? driver.peakWindowLabel : driver.peak}</span>
+                <span className="podium-era">{driver.peakWindowLabel}</span>
               </div>
               <div className="podium-driver-info">
                 <span className="podium-flag">{driver.flag}</span>
@@ -222,32 +187,14 @@ export default function Leaderboard({
               </div>
               <div className="podium-elo-block">
                 <div className="podium-elo-val">
-                  {modelMode === 'goat' ? (
-                    <>
-                      <strong>{driver.compositeScore}</strong>
-                      <span>Performance Score</span>
-                    </>
-                  ) : (
-                    <>
-                      <strong>{driver.peakElo}</strong>
-                      <span>Peak Elo</span>
-                    </>
-                  )}
+                  <strong>{driver.unifiedScore}</strong>
+                  <span>ENP Score</span>
                 </div>
                 <div className="podium-stats-mini">
-                  {modelMode === 'goat' ? (
-                    <>
-                      <span>Era Depth: <strong>{Math.round(driver.eraDiscountFactor * 100)}%</strong></span>
-                      <span>Adj Z-Pk: <strong>+{driver.zPeak}σ</strong></span>
-                      <span>Era Elo: <strong>{driver.eraAdjustedElo}</strong></span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Quali: <strong>{driver.pace}</strong></span>
-                      <span>Race: <strong>{driver.race}</strong></span>
-                      <span>Overall: <strong>{driver.execution}</strong></span>
-                    </>
-                  )}
+                  <span>Era Depth: <strong>{Math.round(driver.eraDiscountFactor * 100)}%</strong></span>
+                  <span>Quali: <strong>{driver.pace}</strong></span>
+                  <span>Race: <strong>{driver.race}</strong></span>
+                  <span>Overall: <strong>{driver.execution}</strong></span>
                 </div>
               </div>
               <div className="podium-actions">
@@ -327,34 +274,19 @@ export default function Leaderboard({
       <div className="leaderboard-table-container">
         <table className="leaderboard-table">
           <thead>
-            {modelMode === 'goat' ? (
-              <tr>
-                <th className="th-rank">Rank</th>
-                <th className="th-driver">Driver</th>
-                <th className="th-era">Peak Window</th>
-                <th className="th-elo">Performance Score (0–100)</th>
-                <th className="th-metric">Era Depth</th>
-                <th className="th-metric">Era-Adj Elo</th>
-                <th className="th-metric">Adj Peak Z</th>
-                <th className="th-metric">Raw Peak Z</th>
-                <th className="th-metric">Prime Z</th>
-                <th className="th-trophies">Championships</th>
-                <th className="th-actions">Compare</th>
-              </tr>
-            ) : (
-              <tr>
-                <th className="th-rank">Rank</th>
-                <th className="th-driver">Driver</th>
-                <th className="th-era">Peak Window</th>
-                <th className="th-elo">Peak Elo</th>
-                <th className="th-metric">Qualifying</th>
-                <th className="th-metric">Race Pace</th>
-                <th className="th-metric">Execution</th>
-                <th className="th-metric">Adaptability</th>
-                <th className="th-trophies">Championships</th>
-                <th className="th-actions">Compare</th>
-              </tr>
-            )}
+            <tr>
+              <th className="th-rank">Rank</th>
+              <th className="th-driver">Driver</th>
+              <th className="th-era">Peak Window</th>
+              <th className="th-elo">ENP Score (0–100)</th>
+              <th className="th-metric">Era Depth</th>
+              <th className="th-metric">Qualifying</th>
+              <th className="th-metric">Race Pace</th>
+              <th className="th-metric">Execution</th>
+              <th className="th-metric">Adaptability</th>
+              <th className="th-trophies">Championships</th>
+              <th className="th-actions">Compare</th>
+            </tr>
           </thead>
           <tbody>
             {filteredDrivers.map((driver, index) => {
@@ -364,10 +296,8 @@ export default function Leaderboard({
               const isTopThree = rank <= 3 && !searchQuery;
               const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : null;
 
-              // Relative progress bar
-              const barPct = modelMode === 'goat'
-                ? Math.max(10, Math.min(100, Math.round(driver.compositeScore)))
-                : Math.max(10, Math.min(100, Math.round(((driver.peakElo - 1500) / 260) * 100)));
+              // Progress bar fill for ENP Score
+              const barPct = Math.max(10, Math.min(100, Math.round(driver.unifiedScore)));
 
               return (
                 <tr
@@ -394,100 +324,66 @@ export default function Leaderboard({
                   </td>
                   <td className="td-era">
                     <span className="era-badge">
-                      {modelMode === 'goat' ? driver.peakWindowLabel : driver.peak}
+                      {driver.peakWindowLabel}
                     </span>
                   </td>
 
-                  {modelMode === 'goat' ? (
-                    <>
-                      <td className="td-elo">
-                        <div className="elo-cell">
-                          <div className="elo-number-row">
-                            <strong style={{ color: 'var(--f1-red)', fontSize: '1.05rem' }}>{driver.compositeScore}</strong>
-                            <small className="tqi-badge">60/40</small>
-                          </div>
-                          <div className="elo-meter-bar">
-                            <div className="elo-meter-fill" style={{ width: `${barPct}%`, background: driver.color }} />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill" title={`Era Talent-Pool Depth factor: ${Math.round(driver.eraDiscountFactor * 100)}%`}>
-                          <strong style={{
-                            color: driver.eraDiscountFactor >= 0.85 ? '#059669' : driver.eraDiscountFactor >= 0.65 ? '#d97706' : '#dc2626'
-                          }}>
-                            {Math.round(driver.eraDiscountFactor * 100)}%
-                          </strong>
-                          <div className="metric-bar">
-                            <i style={{
-                              width: `${Math.round(driver.eraDiscountFactor * 100)}%`,
-                              background: driver.eraDiscountFactor >= 0.85 ? '#10b981' : driver.eraDiscountFactor >= 0.65 ? '#f59e0b' : '#ef4444'
-                            }} />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>{driver.eraAdjustedElo}</strong>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>+{driver.zPeak}σ</strong>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill" title="Raw within-era Z-score prior to talent-pool depth adjustment">
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                            +{driver.rawZPeak}σ
-                          </span>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>+{driver.zPrime}σ</strong>
-                        </div>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td className="td-elo">
-                        <div className="elo-cell">
-                          <div className="elo-number-row">
-                            <strong>{driver.peakElo}</strong>
-                            <small className="tqi-badge">TQI {driver.tqi}</small>
-                          </div>
-                          <div className="elo-meter-bar">
-                            <div className="elo-meter-fill" style={{ width: `${barPct}%`, background: driver.color }} />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>{driver.pace}</strong>
-                          <span className="metric-bar"><i style={{ width: `${driver.pace}%`, background: driver.color }} /></span>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>{driver.race}</strong>
-                          <span className="metric-bar"><i style={{ width: `${driver.race}%`, background: driver.color }} /></span>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>{driver.execution}</strong>
-                          <span className="metric-bar"><i style={{ width: `${driver.execution}%`, background: driver.color }} /></span>
-                        </div>
-                      </td>
-                      <td className="td-metric">
-                        <div className="metric-pill">
-                          <strong>{driver.adaptability}</strong>
-                          <span className="metric-bar"><i style={{ width: `${driver.adaptability}%`, background: driver.color }} /></span>
-                        </div>
-                      </td>
-                    </>
-                  )}
+                  <td className="td-elo">
+                    <div className="elo-cell">
+                      <div className="elo-number-row">
+                        <strong style={{ color: 'var(--f1-red)', fontSize: '1.05rem' }}>{driver.unifiedScore}</strong>
+                        <small className="tqi-badge">ENP</small>
+                      </div>
+                      <div className="elo-meter-bar">
+                        <div className="elo-meter-fill" style={{ width: `${barPct}%`, background: driver.color }} />
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="td-metric">
+                    <div className="metric-pill" title={`Era Talent-Pool Depth factor: ${Math.round(driver.eraDiscountFactor * 100)}%`}>
+                      <strong style={{
+                        color: driver.eraDiscountFactor >= 0.85 ? '#059669' : driver.eraDiscountFactor >= 0.65 ? '#d97706' : '#dc2626'
+                      }}>
+                        {Math.round(driver.eraDiscountFactor * 100)}%
+                      </strong>
+                      <div className="metric-bar">
+                        <i style={{
+                          width: `${Math.round(driver.eraDiscountFactor * 100)}%`,
+                          background: driver.eraDiscountFactor >= 0.85 ? '#10b981' : driver.eraDiscountFactor >= 0.65 ? '#f59e0b' : '#ef4444'
+                        }} />
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="td-metric">
+                    <div className="metric-pill">
+                      <strong>{driver.pace}</strong>
+                      <span className="metric-bar"><i style={{ width: `${driver.pace}%`, background: driver.color }} /></span>
+                    </div>
+                  </td>
+
+                  <td className="td-metric">
+                    <div className="metric-pill">
+                      <strong>{driver.race}</strong>
+                      <span className="metric-bar"><i style={{ width: `${driver.race}%`, background: driver.color }} /></span>
+                    </div>
+                  </td>
+
+                  <td className="td-metric">
+                    <div className="metric-pill">
+                      <strong>{driver.execution}</strong>
+                      <span className="metric-bar"><i style={{ width: `${driver.execution}%`, background: driver.color }} /></span>
+                    </div>
+                  </td>
+
+                  <td className="td-metric">
+                    <div className="metric-pill">
+                      <strong>{driver.adaptability}</strong>
+                      <span className="metric-bar"><i style={{ width: `${driver.adaptability}%`, background: driver.color }} /></span>
+                    </div>
+                  </td>
+
                   <td className="td-trophies">
                     <div className="trophies-cell">
                       {driver.wdc > 0 ? (
@@ -497,6 +393,7 @@ export default function Leaderboard({
                       )}
                     </div>
                   </td>
+
                   <td className="td-actions">
                     <div className="row-actions">
                       <button

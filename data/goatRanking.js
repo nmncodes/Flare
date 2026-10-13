@@ -267,8 +267,8 @@ export function step4ComputeCompositeScores(normalizedMetrics, config = DEFAULT_
     });
   }
 
-  // Sort descending by compositeScore, tie-break by eraAdjustedElo
-  rows.sort((a, b) => b.compositeScore - a.compositeScore || b.eraAdjustedElo - a.eraAdjustedElo);
+  // Sort descending by eraAdjustedElo, tie-break by compositeScore
+  rows.sort((a, b) => b.eraAdjustedElo - a.eraAdjustedElo || b.compositeScore - a.compositeScore);
 
   // Assign 1-indexed rank
   rows.forEach((row, idx) => {
