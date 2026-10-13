@@ -19,8 +19,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 67,
     teams: ["McLaren", "Mercedes", "Ferrari"],
     wikiSlug: "Lewis_Hamilton",
-    color: "#00D2BE",
-    quote: "Still we rise."
+    color: "#00D2BE"
   },
   {
     id: "max_verstappen",
@@ -61,8 +60,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 77,
     teams: ["Jordan", "Benetton", "Ferrari", "Mercedes"],
     wikiSlug: "Michael_Schumacher",
-    color: "#DC0000",
-    quote: "I've always believed that you should never, ever give up."
+    color: "#DC0000"
   },
   {
     id: "senna",
@@ -82,8 +80,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 19,
     teams: ["Toleman", "Lotus", "McLaren", "Williams"],
     wikiSlug: "Ayrton_Senna",
-    color: "#FEDB00",
-    quote: "If you no longer go for a gap that exists, you are no longer a racing driver."
+    color: "#FEDB00"
   },
   {
     id: "prost",
@@ -103,8 +100,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 41,
     teams: ["McLaren", "Renault", "Ferrari", "Williams"],
     wikiSlug: "Alain_Prost",
-    color: "#0055A5",
-    quote: "Win at the slowest possible speed."
+    color: "#0055A5"
   },
   {
     id: "vettel",
@@ -124,8 +120,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 38,
     teams: ["BMW Sauber", "Toro Rosso", "Red Bull", "Ferrari", "Aston Martin"],
     wikiSlug: "Sebastian_Vettel",
-    color: "#006F62",
-    quote: "There is still a race to win."
+    color: "#006F62"
   },
   {
     id: "alonso",
@@ -145,8 +140,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 26,
     teams: ["Minardi", "Renault", "McLaren", "Ferrari", "Alpine", "Aston Martin"],
     wikiSlug: "Fernando_Alonso",
-    color: "#006F62",
-    quote: "All the time you have to leave a space!"
+    color: "#006F62"
   },
   {
     id: "norris",
@@ -166,8 +160,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 12,
     teams: ["McLaren"],
     wikiSlug: "Lando_Norris",
-    color: "#FF8000",
-    quote: "Scenario 7, press the overtake button!"
+    color: "#FF8000"
   },
   {
     id: "leclerc",
@@ -187,8 +180,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 10,
     teams: ["Sauber", "Ferrari"],
     wikiSlug: "Charles_Leclerc",
-    color: "#E80020",
-    quote: "I gave it everything. P1 baby!"
+    color: "#E80020"
   },
   {
     id: "piastri",
@@ -208,8 +200,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 3,
     teams: ["McLaren"],
     wikiSlug: "Oscar_Piastri",
-    color: "#FF8000",
-    quote: "Cool, calm, collected."
+    color: "#FF8000"
   },
   {
     id: "russell",
@@ -229,8 +220,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 8,
     teams: ["Williams", "Mercedes"],
     wikiSlug: "George_Russell_(racing_driver)",
-    color: "#00D2BE",
-    quote: "Yabba dabba doo! That was mega."
+    color: "#00D2BE"
   },
   {
     id: "sainz",
@@ -250,8 +240,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 4,
     teams: ["Toro Rosso", "Renault", "McLaren", "Ferrari", "Williams"],
     wikiSlug: "Carlos_Sainz_Jr.",
-    color: "#E80020",
-    quote: "Smooth operator."
+    color: "#E80020"
   },
   {
     id: "raikkonen",
@@ -271,8 +260,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 46,
     teams: ["Sauber", "McLaren", "Ferrari", "Lotus", "Alfa Romeo"],
     wikiSlug: "Kimi_Räikkönen",
-    color: "#DC0000",
-    quote: "Leave me alone, I know what to do."
+    color: "#DC0000"
   },
   {
     id: "lauda",
@@ -292,8 +280,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 24,
     teams: ["March", "BRM", "Ferrari", "Brabham", "McLaren"],
     wikiSlug: "Niki_Lauda",
-    color: "#DC0000",
-    quote: "To give up is something a Lauda does not do."
+    color: "#DC0000"
   },
   {
     id: "fangio",
@@ -313,8 +300,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 23,
     teams: ["Alfa Romeo", "Maserati", "Mercedes", "Ferrari"],
     wikiSlug: "Juan_Manuel_Fangio",
-    color: "#002B49",
-    quote: "You must always strive to be the best, but you must never believe you are."
+    color: "#002B49"
   },
   {
     id: "clark",
@@ -334,8 +320,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 28,
     teams: ["Lotus"],
     wikiSlug: "Jim_Clark",
-    color: "#004225",
-    quote: "He made racing look like an art form."
+    color: "#004225"
   },
   {
     id: "mansell",
@@ -355,8 +340,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 30,
     teams: ["Lotus", "Williams", "Ferrari", "McLaren"],
     wikiSlug: "Nigel_Mansell",
-    color: "#003366",
-    quote: "Red 5 is flying."
+    color: "#003366"
   },
   {
     id: "hakkinen",
@@ -376,8 +360,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 25,
     teams: ["Lotus", "McLaren"],
     wikiSlug: "Mika_Häkkinen",
-    color: "#C0C0C0",
-    quote: "The Flying Finn."
+    color: "#C0C0C0"
   },
   {
     id: "rosberg",
@@ -397,8 +380,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 20,
     teams: ["Williams", "Mercedes"],
     wikiSlug: "Nico_Rosberg",
-    color: "#00D2BE",
-    quote: "Childhood dream achieved."
+    color: "#00D2BE"
   },
   {
     id: "button",
@@ -418,8 +400,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 8,
     teams: ["Williams", "Benetton", "Renault", "BAR", "Honda", "Brawn GP", "McLaren"],
     wikiSlug: "Jenson_Button",
-    color: "#BFFF00",
-    quote: "We are the World Champions!"
+    color: "#BFFF00"
   },
   {
     id: "ricciardo",
@@ -439,8 +420,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 17,
     teams: ["HRT", "Toro Rosso", "Red Bull", "Renault", "McLaren", "RB"],
     wikiSlug: "Daniel_Ricciardo",
-    color: "#3671C6",
-    quote: "I never left. Just stepped aside for a while."
+    color: "#3671C6"
   },
   {
     id: "perez",
@@ -460,8 +440,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 12,
     teams: ["Sauber", "McLaren", "Force India", "Racing Point", "Red Bull"],
     wikiSlug: "Sergio_Pérez",
-    color: "#3671C6",
-    quote: "Minister of Defense."
+    color: "#3671C6"
   },
   {
     id: "bottas",
@@ -481,8 +460,7 @@ export const CURATED_DRIVERS = [
     fastestLaps: 19,
     teams: ["Williams", "Mercedes", "Alfa Romeo", "Sauber"],
     wikiSlug: "Valtteri_Bottas",
-    color: "#52E252",
-    quote: "To whom it may concern, **** you."
+    color: "#52E252"
   }
 ];
 
