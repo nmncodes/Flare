@@ -161,14 +161,28 @@ class Observation:
     weight: float
     kind: str
 
+DEFAULT_CACHE = ROOT / "data" / "cache" / "f1db-csv.zip"
+
+
 def fetch_archive(input_path: Path | None, cache_path: Path | None) -> bytes:
-    if input_path:
+    if input_path and input_path.exists():
+        print(f"Reading local source archive: {input_path}…", flush=True)
         return input_path.read_bytes()
     if cache_path and cache_path.exists():
+        print(f"Using cached source archive: {cache_path}…", flush=True)
         return cache_path.read_bytes()
+    print("Downloading source archive from GitHub release…", flush=True)
     request = urllib.request.Request(F1DB_RELEASE, headers={"User-Agent": "Flare-CrossEra-Model/1.0"})
-    with urllib.request.urlopen(request, timeout=90) as response:
-        payload = response.read()
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            payload = response.read()
+    except Exception as exc:
+        if cache_path and cache_path.exists():
+            print(f"Download failed ({exc}); falling back to local cache {cache_path}…", flush=True)
+            return cache_path.read_bytes()
+        raise RuntimeError(
+            f"Failed to download F1DB release ({exc}) and no local cache was found at {cache_path}."
+        ) from exc
     if cache_path:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_bytes(payload)
@@ -208,12 +222,11 @@ def teammate_observations(frame: pd.DataFrame, kind: str, base_weight: float):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path)
-    parser.add_argument("--cache", type=Path)
+    parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument("--iterations", type=int, default=1600)
     args = parser.parse_args()
 
-    print("Downloading source archive…", flush=True)
     payload = fetch_archive(args.input, args.cache)
     with zipfile.ZipFile(io.BytesIO(payload)) as archive:
         print("Reading F1DB result tables…", flush=True)

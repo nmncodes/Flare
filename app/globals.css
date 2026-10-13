@@ -1655,6 +1655,43 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+/* Model Mode Switcher */
+.model-mode-switcher {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: var(--bg-card-subtle);
+  padding: 5px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  width: fit-content;
+}
+
+.mode-pill-btn {
+  padding: 8px 18px;
+  font-family: var(--font-f1);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.mode-pill-btn:hover {
+  color: var(--text-main);
+}
+
+.mode-pill-btn.active {
+  background: var(--f1-red);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(225, 6, 0, 0.35);
+}
+
 /* Leaderboard Table */
 .leaderboard-table-container {
   overflow-x: auto;

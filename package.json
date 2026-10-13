@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "model:build": "python python/build_cross_era_snapshot.py"
+    "model:build": "python python/build_cross_era_snapshot.py",
+    "goat:build": "python python/goat_composite_ranking.py",
+    "goat:test": "python python/goat_composite_ranking.py --test"
   },
   "keywords": [
     "f1",
