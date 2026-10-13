@@ -877,7 +877,7 @@ def main() -> None:
 
     # Display Top Table
     print("\n" + "=" * 130)
-    print(f"{'RANK':<5} {'NAME':<24} {'RAW PEAK':<10} {'RAW Z-PK':<10} {'ERA DEPTH':<10} {'ADJ Z-PK':<10} {'NORM PK':<9} {'NORM PR':<9} {'ADJ ELO':<9} {'GOAT SCORE':<10}")
+    print(f"{'RANK':<5} {'NAME':<24} {'RAW PEAK':<10} {'RAW Z-PK':<10} {'ERA DEPTH':<10} {'ADJ Z-PK':<10} {'NORM PK':<9} {'NORM PR':<9} {'ADJ ELO':<9} {'PERF SCORE':<10}")
     print("=" * 130)
     for row in leaderboard[: args.top_display]:
         print(

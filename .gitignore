@@ -1,7 +1,40 @@
+# Dependencies
 node_modules/
+
+# Next.js
 .next/
 out/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.python-version
+.venv/
+venv/
+env/
+
+# Python caches and generated test/coverage files
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS files
 .DS_Store
 Thumbs.db
-*.log
-python/.cache/
+
+# Editor settings
+.vscode/
+.idea/

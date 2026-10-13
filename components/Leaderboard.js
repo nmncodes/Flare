@@ -14,12 +14,12 @@ const ERA_TABS = [
 ];
 
 const MODEL_MODES = [
-  { id: 'goat', label: 'Era-Normalized GOAT Composite (60/40)' },
+  { id: 'goat', label: 'Era-Normalized Performance Index (60/40)' },
   { id: 'bradley_terry', label: 'Bradley-Terry Teammate Peak' }
 ];
 
 const SORT_OPTIONS = [
-  { id: 'compositeScore', label: 'GOAT Composite Score (60/40)' },
+  { id: 'compositeScore', label: 'Era-Normalized Performance Score (60/40)' },
   { id: 'eraAdjustedElo', label: 'Era-Adjusted Display Elo' },
   { id: 'eraDiscountFactor', label: 'Era Talent Depth %' },
   { id: 'zPeak', label: 'Adjusted Peak Z-Score (σ)' },
@@ -158,7 +158,7 @@ export default function Leaderboard({
         <div>
           <div className="section-title-tag">ALL-TIME BENCHMARK RANKINGS</div>
           <h2 className="section-heading">
-            {modelMode === 'goat' ? 'All-Time GOAT Composite Leaderboard' : 'All-Time Peak Elo Leaderboard'}
+            {modelMode === 'goat' ? 'All-Time Era-Normalized Performance Leaderboard' : 'All-Time Peak Elo Leaderboard'}
           </h2>
           <p className="section-subtext">
             {modelMode === 'goat'
@@ -169,7 +169,7 @@ export default function Leaderboard({
         <div className="leaderboard-stats-chip">
           {modelMode === 'goat' ? (
             <>
-              <span>Top GOAT Score <strong>{topThree[0]?.compositeScore} / 100</strong></span>
+              <span>Top Performance Score <strong>{topThree[0]?.compositeScore} / 100</strong></span>
               <span>•</span>
               <span>Era Apex Elo <strong>{topThree[0]?.eraAdjustedElo}</strong></span>
             </>
@@ -225,7 +225,7 @@ export default function Leaderboard({
                   {modelMode === 'goat' ? (
                     <>
                       <strong>{driver.compositeScore}</strong>
-                      <span>GOAT Score</span>
+                      <span>Performance Score</span>
                     </>
                   ) : (
                     <>
@@ -332,7 +332,7 @@ export default function Leaderboard({
                 <th className="th-rank">Rank</th>
                 <th className="th-driver">Driver</th>
                 <th className="th-era">Peak Window</th>
-                <th className="th-elo">GOAT Score (0–100)</th>
+                <th className="th-elo">Performance Score (0–100)</th>
                 <th className="th-metric">Era Depth</th>
                 <th className="th-metric">Era-Adj Elo</th>
                 <th className="th-metric">Adj Peak Z</th>
