@@ -153,8 +153,11 @@ export default function Home() {
         </div>
 
         <div className="header-actions">
+          <Link className="header-btn active" href="/" title="Career Labs Head-to-Head Comparison">
+            <span>Career Labs</span>
+          </Link>
           <Link className="header-btn" href="/compare" title="Open the cross-era comparison lab">
-            <span>Cross-Era Lab</span>
+            <span>Cross Comparison</span>
           </Link>
           <Link className="header-btn" href="/compare#leaderboard" title="View all-time F1 peak Elo leaderboard">
             <span>Leaderboard</span>

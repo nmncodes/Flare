@@ -104,23 +104,23 @@ export default function Leaderboard({
 
   const handleSelectA = (id) => {
     if (onSelectDriverA) onSelectDriverA(id);
-    const element = document.querySelector('.compare-hero');
+    const element = document.querySelector('.comparison-arena') || document.querySelector('.compare-hero');
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSelectB = (id) => {
     if (onSelectDriverB) onSelectDriverB(id);
-    const element = document.querySelector('.compare-hero');
+    const element = document.querySelector('.comparison-arena') || document.querySelector('.compare-hero');
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section id="leaderboard" className="leaderboard-section" aria-label="All-Time F1 Driver Peak Elo Leaderboard">
+    <section id="leaderboard" className="analytics-section leaderboard-section" aria-label="All-Time F1 Driver Peak Elo Leaderboard">
       <div className="leaderboard-header">
         <div>
-          <p className="compare-eyebrow">ALL-TIME BENCHMARK RANKINGS</p>
-          <h2>All-Time Peak Elo Leaderboard</h2>
-          <p className="leaderboard-subtitle">
+          <div className="section-title-tag">ALL-TIME BENCHMARK RANKINGS</div>
+          <h2 className="section-heading">All-Time Peak Elo Leaderboard</h2>
+          <p className="section-subtext">
             All 23 curated drivers ranked by peak Elo across their best sustained 4-year window.
             Calibrated for teammate quality, competitive depth, and neutral machinery.
           </p>
