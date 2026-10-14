@@ -782,6 +782,21 @@ def run_self_tests() -> bool:
     return True
 
 
+DRIVER_CHAMPIONSHIPS = {
+    "michael_schumacher": 7, "hamilton": 7, "juan_manuel_fangio": 5, "fangio": 5,
+    "alain_prost": 4, "prost": 4, "sebastian_vettel": 4, "vettel": 4,
+    "max_verstappen": 4, "ayrton_senna": 3, "senna": 3, "niki_lauda": 3, "lauda": 3,
+    "jackie_stewart": 3, "stewart": 3, "jack_brabham": 3, "nelson_piquet": 3, "piquet": 3,
+    "fernando_alonso": 2, "alonso": 2, "jim_clark": 2, "clark": 2, "mika_hakkinen": 2, "hakkinen": 2,
+    "emerson_fittipaldi": 2, "fittipaldi": 2, "alberto_ascari": 2, "graham_hill": 2,
+    "nigel_mansell": 1, "mansell": 1, "kimi_raikkonen": 1, "raikkonen": 1, "nico_rosberg": 1, "rosberg": 1,
+    "jenson_button": 1, "button": 1, "damon_hill": 1, "mario_andretti": 1, "james_hunt": 1, "hunt": 1,
+    "jody_scheckter": 1, "alan_jones": 1, "keke_rosberg": 1, "jacques_villeneuve": 1,
+    "jochen_rindt": 1, "denny_hulme": 1, "john_surtees": 1, "phil_hill": 1,
+    "mike_hawthorn": 1, "nino_farina": 1, "farina": 1,
+}
+
+
 def print_model_1_table(top_n: int = 25) -> None:
     """Print the Model 1 Bradley-Terry Teammate Peak Elo leaderboard."""
     snapshot_path = Path(__file__).resolve().parents[1] / "data" / "cross-era-snapshot.json"
@@ -804,13 +819,13 @@ def print_model_1_table(top_n: int = 25) -> None:
     print("\n" + "=" * 76)
     print("MODEL 1: BRADLEY-TERRY TEAMMATE NETWORK LEADERBOARD (NEUTRAL MACHINERY)")
     print("=" * 76)
-    print(f"{'RANK':<6} {'DRIVER':<26} {'PEAK ELO':<12} {'UNCERTAINTY':<14} {'PEAK WINDOW':<14}")
+    print(f"{'RANK':<6} {'DRIVER':<26} {'PEAK ELO':<12} {'CHAMPIONSHIPS':<15} {'PEAK WINDOW':<14}")
     print("=" * 76)
     for rank, (driver_id, prof) in enumerate(ranked[:top_n], start=1):
         name = app_to_name.get(driver_id, driver_id.replace("_", " ").title())
-        unc_str = f"+/- {prof.get('uncertaintyElo', 40)} Elo"
+        champs = prof.get("championships", DRIVER_CHAMPIONSHIPS.get(driver_id, 0))
         peak_str = str(prof.get('peak', '-')).replace('\u2013', '-').replace('\u2014', '-')
-        print(f"{rank:<6} {name:<26} {prof['peakElo']:<12} {unc_str:<14} {peak_str:<14}")
+        print(f"{rank:<6} {name:<26} {prof['peakElo']:<12} {champs:<15} {peak_str:<14}")
     print("=" * 76 + "\n")
 
 
